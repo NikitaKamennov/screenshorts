@@ -1,0 +1,16 @@
+{
+  "schema": "skrinpolka-runtime-v1",
+  "background_removal": {"enabled": false},
+  "ocr": {
+    "enabled": true,
+    "executable": "../tools/tesseract/tesseract.exe",
+    "tessdata_directory": "../tools/tesseract/tessdata",
+    "languages": ["rus", "eng"],
+    "read_roots": ["../tools/tesseract"],
+    "memory_bytes": 805306368,
+    "threads": 2,
+    "timeout_seconds": 90,
+    "model_id": "tesseract-lstm-rus-eng",
+    "model_revision": "bundle-manifest"
+  }
+}

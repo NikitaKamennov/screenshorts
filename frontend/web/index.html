@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>ScreenShorts Pro</title>
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="appearance.css">
+  <link rel="stylesheet" href="workspace.css">
+  <link rel="stylesheet" href="shelf.css">
+  <script src="editor.js" defer></script>
+  <script src="panel.js" defer></script>
+  <script src="workspace.js" defer></script>
+  <script src="appearance.js" defer></script>
+  <script src="shelf-model.js" defer></script>
+  <script src="shelf.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="icon-capture" viewBox="0 0 24 24"><path d="M8 3H4a1 1 0 0 0-1 1v4m13-5h4a1 1 0 0 1 1 1v4M3 16v4a1 1 0 0 0 1 1h4m8 0h4a1 1 0 0 0 1-1v-4"/><rect x="7" y="7" width="10" height="10" rx="1"/></symbol>
+    <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></symbol>
+    <symbol id="icon-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 .2c0 1.8-2.5 1.8-2.5 3.8M12 16.5v.1"/></symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="icon-pencil" viewBox="0 0 24 24"><path d="m15 4 5 5M4 20l5-1L20 8a2 2 0 0 0-5-5L4 14z"/></symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 19 19 5M8 5h11v11"/></symbol>
+    <symbol id="icon-text" viewBox="0 0 24 24"><path d="M4 7V4h16v3M12 4v16M8 20h8"/></symbol>
+    <symbol id="icon-magic" viewBox="0 0 24 24"><path d="m5 19 11-11 3 3L8 22zm9-14 1-3m5 4 3-1M4 7l1-3m0 3 3 1M20 16l1 3m-1-3-3-1"/></symbol>
+    <symbol id="icon-note" viewBox="0 0 24 24"><path d="M14 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v9zM14 21v-7h7M7 8h10M7 12h5"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM8 12l3 3 5-6"/></symbol>
+    <symbol id="icon-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 5-5 4 4 4-6 5 7"/></symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Навигация">
+      <a class="brand" href="#" aria-label="ScreenShorts Pro, библиотека">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>ScreenShorts Pro<span class="brand-caption">сохрани. вспомни. найди.</span></span>
+      </a>
+      <div class="sidebar-section-label">РАБОЧЕЕ МЕСТО</div>
+      <button class="nav-button is-active" id="library-nav" aria-current="page"><svg class="icon"><use href="#icon-grid"/></svg>Моя полка<span class="nav-count" id="nav-count">—</span></button>
+      <button class="nav-button" id="shelf-trash"><svg class="icon"><use href="#icon-trash"/></svg>Корзина</button>
+      <div class="sidebar-hint"><span class="small-dot"></span>Локальная библиотека</div>
+      <div class="sidebar-bottom">
+        <button class="nav-button" id="settings-button"><svg class="icon"><use href="#icon-settings"/></svg>Настройки</button>
+        <div class="privacy-note"><svg class="icon"><use href="#icon-shield"/></svg><span>Скриншоты и комментарии<br>остаются на твоём ПК.</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="page-heading">
+        <div><p class="eyebrow">ТВОЯ ВИЗУАЛЬНАЯ ПАМЯТЬ</p><h1>Моя полка<span class="heading-dot">.</span></h1><p class="page-description">Удачные решения, нужные детали и всё, к чему захочется вернуться.</p></div>
+        <div class="header-actions">
+          <button type="button" class="icon-button header-help" id="help-button" title="Инструкция (F1)" aria-label="Открыть инструкцию"><svg class="icon"><use href="#icon-help"/></svg></button>
+          <button type="button" class="button button-secondary theme-toggle" id="theme-toggle" aria-pressed="false">☾ Тёмная тема</button>
+          <button class="button button-secondary" id="capture-button" disabled title="Запуск системного захвата области"><svg class="icon"><use href="#icon-capture"/></svg>Захватить область</button>
+          <button class="button button-secondary" id="capture-screen-button" disabled title="Снимок всего экрана без выделения"><svg class="icon"><use href="#icon-image"/></svg>Весь экран</button>
+          <button class="button button-primary" id="import-button" disabled><svg class="icon"><use href="#icon-plus"/></svg>Импортировать PNG</button>
+        </div>
+      </header>
+
+      <div class="host-notice" id="host-notice" hidden><svg class="icon"><use href="#icon-help"/></svg><div><strong>Нужна desktop-оболочка</strong><p>Открой ScreenShorts Pro как приложение. Этот HTML — её интерфейс: доступ к файлам и библиотеке предоставляет локальное ядро Go.</p></div></div>
+      <div class="error-notice" id="page-error" role="alert" hidden></div>
+      <div class="error-notice" id="silent-error" role="status" hidden></div>
+      <div class="error-notice" id="ocr-warning" role="status" hidden></div>
+	  <div class="host-notice" id="library-warnings" hidden><div><strong>В библиотеке есть записи, требующие внимания</strong><p id="warnings-summary"></p><button class="text-button" id="show-recovery-button">Показать записи</button></div></div>
+
+      <div class="library-toolbar">
+        <label class="search-field"><svg class="icon"><use href="#icon-search"/></svg><input id="search-input" type="search" placeholder="Найти по тексту снимка или комментарию…" autocomplete="off" spellcheck="false" disabled aria-label="Поиск по распознанному тексту и комментарию"></label>
+        <span class="result-count" id="result-count" aria-live="polite">Загрузка библиотеки…</span>
+      </div>
+
+      <p class="field-help" id="index-status" role="status">Поиск по словам распознанного текста и комментариев.</p>
+      <div class="shelf-controls" aria-label="Вид и сортировка полки">
+        <div class="view-switch" role="group" aria-label="Отображение"><button id="view-grid" aria-pressed="true">▦ Миниатюры</button><button id="view-table" aria-pressed="false">☷ Таблица</button></div>
+        <label>Сортировка <select id="shelf-sort"><option value="date">Дата</option><option value="name">Имя</option><option value="content">Содержание · похожие рядом</option><option value="size">Размер файла</option><option value="resolution">Разрешение</option><option value="ocr">Статус OCR</option></select></label>
+        <button class="button button-secondary" id="shelf-direction" title="Изменить направление сортировки">↓</button>
+        <label title="Разделение по календарным дням при сортировке по дате"><input type="checkbox" id="shelf-days" checked>По дням</label>
+        <label><input type="checkbox" id="shelf-compact">Компактно</label>
+        <button class="icon-button shelf-refresh" id="shelf-refresh" title="Обновить полку (F5)" aria-label="Обновить полку">↻</button>
+      </div>
+      <div class="selection-bar" aria-label="Выделение и действия">
+        <label title="Выделить все результаты поиска, включая ещё не показанные"><input type="checkbox" id="shelf-select-all" aria-label="Выделить все результаты"> Все</label>
+        <span class="selection-summary" id="shelf-selection-count" role="status">Ничего не выделено</span>
+        <button class="text-button" id="shelf-clear">Снять</button>
+        <button class="button button-secondary" data-shelf-action="copy">Копировать файлы</button>
+        <button class="button button-secondary" data-shelf-action="text">Копировать текст</button>
+        <button class="button button-secondary" data-shelf-action="share">Поделиться…</button>
+        <button class="button button-secondary" data-shelf-action="zip">В ZIP</button>
+        <button class="button button-secondary shelf-danger" data-shelf-action="delete">Удалить</button>
+      </div>
+      <p class="shelf-hint" id="shelf-status" role="status">Чекбоксы — выбор, Shift — диапазон, Ctrl+A — все результаты, Escape — снять выбор.</p>
+      <section class="gallery-region" aria-label="Сохранённые скриншоты" aria-busy="true" id="gallery-region">
+        <div class="empty-state" id="empty-state" hidden>
+          <div class="shelf-illustration" aria-hidden="true"><div class="illustration-card illustration-back"><span></span><span></span><span></span></div><div class="illustration-card illustration-front"><div class="illustration-sun"></div><div class="illustration-mountain mountain-one"></div><div class="illustration-mountain mountain-two"></div></div><div class="illustration-note"><svg class="icon"><use href="#icon-note"/></svg></div><div class="illustration-shelf"></div></div>
+          <span class="small-label">МЕСТО ДЛЯ НУЖНЫХ НАХОДОК</span>
+          <h2 id="empty-title">Твоя полка начинается с одного скрина</h2>
+          <p id="empty-description">Импортируй PNG и при желании добавь комментарий.<br>Все сохранённые скриншоты будут здесь.</p>
+          <button class="button button-primary" id="empty-import-button" disabled><svg class="icon"><use href="#icon-plus"/></svg>Добавить первый скрин</button>
+          <button class="text-button" id="clear-search-button" hidden>Очистить поиск</button>
+        </div>
+        <div class="gallery" id="gallery"></div>
+        <div class="shelf-table-wrap" id="shelf-table-wrap" hidden><table class="shelf-table" id="shelf-table"><thead><tr><th class="check-cell"><input type="checkbox" id="table-select-all" aria-label="Выделить все результаты"></th><th data-sort="name"><button>Имя</button></th><th data-sort="date"><button>Дата</button></th><th data-sort="content"><button title="Группировать по общим словам OCR и комментария">Содержание</button></th><th data-sort="size"><button>Размер</button></th><th data-sort="resolution"><button>Разрешение</button></th><th data-sort="ocr"><button>OCR</button></th><th aria-label="Действия"></th></tr></thead><tbody id="shelf-rows"></tbody></table></div>
+        <button class="button button-secondary load-more" id="load-more-button" hidden>Показать ещё</button>
+      </section>
+
+      <footer class="library-footer"><button class="text-button" id="shelf-folder" title="Открыть папку библиотеки"><svg class="icon"><use href="#icon-folder"/></svg><span id="library-location">Локальная библиотека</span></button><span>PNG + JSON · переносимые метаданные</span></footer>
+    </main>
+  </div>
+
+  <dialog id="editor-dialog" class="editor-dialog" aria-labelledby="editor-title">
+    <div class="editor-layout">
+      <header class="dialog-heading editor-heading"><div><span class="eyebrow">ПЕРЕД СОХРАНЕНИЕМ</span><h2 id="editor-title">Добавь немного контекста</h2></div><div class="editor-header-actions"><button type="button" class="button button-secondary" id="editor-maximise" aria-pressed="false">Развернуть</button><button class="icon-button" id="editor-close" aria-label="Отменить снимок"><svg class="icon"><use href="#icon-close"/></svg></button></div></header>
+      <div class="editor-body" id="editor-body" data-panel-position="right">
+        <div class="editor-preview"><canvas id="editor-canvas" aria-label="Изображение: рисование и выделение области" tabindex="0"></canvas><img id="editor-image" alt="Выбранный PNG перед сохранением" hidden><span class="preview-label"><span id="editor-filename"></span><span id="editor-dimensions"></span></span></div>
+        <div id="editor-splitter" class="editor-splitter" role="separator" tabindex="0" aria-label="Размер панели инструментов" aria-controls="editor-tools" aria-orientation="vertical" aria-valuemin="240" aria-valuemax="1600" aria-valuenow="320" title="Потяни границу панели; стрелки меняют размер с клавиатуры"></div>
+        <aside class="editor-tools" id="editor-tools" aria-label="Инструменты редактора">
+          <div class="editor-panel-heading"><h3>Инструменты</h3><button type="button" id="editor-panel-position" class="panel-position-button">Панель: справа</button></div>
+          <p class="field-help panel-layout-hint">Перетаскивай блоки за заголовки. Двойной щелчок разворачивает блок; повторный — возвращает остальные. Потяни границу для изменения размера панели.</p>
+          <p class="visually-hidden" id="editor-layout-status" role="status" aria-live="polite"></p>
+          <div class="editor-tool-blocks" id="editor-tool-blocks">
+            <section class="tool-block note-section" data-tool-block="comment">
+              <button type="button" class="tool-block-handle" data-tool-handle title="Перетащи блок; Alt+стрелки меняют порядок с клавиатуры"><span class="block-grip" aria-hidden="true">⠿</span><span>Комментарий</span></button>
+              <label class="field-label" for="screenshot-note">Комментарий к скриншоту</label><textarea id="screenshot-note" rows="5" maxlength="8000" placeholder="Что здесь полезного? Например: панель проекта, хороший вариант меню…" aria-describedby="comment-hint comment-storage-hint"></textarea><p class="field-help" id="comment-hint">Комментарий необязателен. Сохранить можно без него и без завершённого OCR.</p><p class="field-help" id="comment-storage-hint">Комментарий сохранится рядом с PNG в JSON. Уже можно искать по его словам.</p>
+            </section>
+            <section class="tool-block" data-tool-block="drawing">
+              <button type="button" class="tool-block-handle" data-tool-handle title="Перетащи блок; Alt+стрелки меняют порядок с клавиатуры"><span class="block-grip" aria-hidden="true">⠿</span><span>Пометки на изображении</span></button>
+              <div class="tool-buttons editor-tool-grid"><button data-editor-tool="pencil" class="is-active">Карандаш</button><button data-editor-tool="line">Линия</button><button data-editor-tool="arrow">Стрелка</button><button data-editor-tool="double-arrow">Двойная ↔</button><button data-editor-tool="elbow-arrow">Угловая ↳</button><button data-editor-tool="rect">Прямоугольник</button><button data-editor-tool="ellipse">Эллипс</button><button data-editor-tool="redact" title="Непрозрачное закрашивание конечных пикселей">Скрыть</button><button data-editor-tool="crop">Обрезать</button></div><div class="editor-controls"><label>Цвет <input type="color" id="editor-color" value="#e24c3a"></label><label>Толщина <input type="range" id="editor-width" min="1" max="32" value="4"></label></div><div class="tool-buttons"><button id="editor-undo" disabled>Отменить ↶</button><button id="editor-redo" disabled>Повторить ↷</button></div><p class="field-help">Рисуй по картинке. Для обрезки или скрытия выдели прямоугольник. Ctrl+Z — отмена, Ctrl+Shift+Z — повтор.</p>
+            </section>
+            <section class="tool-block" data-tool-block="ocr">
+              <button type="button" class="tool-block-handle" data-tool-handle title="Перетащи блок; Alt+стрелки меняют порядок с клавиатуры"><span class="block-grip" aria-hidden="true">⠿</span><span>Текст на скриншоте</span></button>
+              <div class="tool-buttons"><button id="run-ocr-button" disabled>Распознать текст</button><button id="cancel-ocr-button" hidden>Остановить OCR</button></div><p class="field-help" id="ocr-status">Определяем доступность OCR…</p><details><summary>Исходное распознавание</summary><textarea id="ocr-raw" rows="4" readonly placeholder="Исходный текст OCR"></textarea></details><label class="field-label" for="ocr-text">Текст с твоими исправлениями</label><textarea id="ocr-text" rows="5" maxlength="200000" placeholder="Здесь можно исправить распознанный текст"></textarea><div class="tool-buttons"><button id="copy-ocr-button">В буфер</button><button id="export-ocr-button">В TXT</button></div>
+            </section>
+            <section class="tool-block" data-tool-block="photo">
+              <button type="button" class="tool-block-handle" data-tool-handle><span class="block-grip" aria-hidden="true">⠿</span><span>Редактирование фото</span></button>
+              <button type="button" id="remove-background-button" class="planned-tool" disabled><svg class="icon"><use href="#icon-magic"/></svg><span>Удалить фон</span></button>
+              <button type="button" id="cancel-background-button" class="text-button" hidden>Остановить удаление фона</button>
+              <p class="field-help" id="background-status" role="status">Определяем доступность удаления фона…</p>
+              <p class="field-help">Объект останется на прозрачном фоне PNG. «Отменить» возвращает прежний фон. Лучше всего подходит для фото предметов; сложные края могут потребовать отмены.</p>
+            </section>
+          </div>
+          <div class="index-note"><svg class="icon"><use href="#icon-search"/></svg><p>Сейчас доступен поиск по словам OCR и твоего комментария. Поиск по смыслу появится отдельным этапом.</p></div>
+        </aside>
+      </div>
+      <footer class="editor-footer"><div><p class="dialog-error" id="editor-error" role="alert" hidden></p><span class="save-hint">Enter — сохранить. В текстовых полях — новая строка. Размер редактора меняется за правый нижний угол.</span></div><div class="dialog-actions"><button class="button button-secondary" id="editor-cancel">Отмена</button><button class="button button-primary" id="save-screenshot-button"><svg class="icon"><use href="#icon-plus"/></svg>Сохранить на полку</button></div></footer>
+    </div>
+    <button type="button" id="editor-resize" class="editor-resize" aria-label="Изменить размер редактора" title="Потяни угол; стрелки меняют размер с клавиатуры">◢</button>
+  </dialog>
+
+  <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title">
+    <header class="dialog-heading"><div><span class="eyebrow">ПОД ТВОЙ РИТМ</span><h2 id="settings-title">Настройки</h2></div><button class="icon-button" data-close-dialog="settings-dialog" aria-label="Закрыть настройки"><svg class="icon"><use href="#icon-close"/></svg></button></header>
+    <div class="settings-content"><label class="field-label" for="library-directory">Папка библиотеки</label><div class="folder-input"><input id="library-directory" readonly placeholder="Выбери папку"><button class="button button-secondary" id="select-folder-button"><svg class="icon"><use href="#icon-folder"/></svg>Выбрать</button></div><p class="field-help">PNG и соседние JSON хранятся здесь. При смене папки откроется её библиотека; существующие файлы не переносятся.</p>
+      <section class="appearance-section" aria-labelledby="appearance-title"><h3 id="appearance-title">Оформление</h3><label class="field-label" for="appearance-theme">Тема</label><select id="appearance-theme"><option value="light">Светлая</option><option value="dark">Тёмная</option></select><p class="field-label">Основной цвет</p><div class="accent-presets" role="group" aria-label="Готовые цвета"><button type="button" data-accent="#2d6a4e" style="--swatch:#2d6a4e" aria-label="Зелёный" aria-pressed="true"></button><button type="button" data-accent="#3b65dc" style="--swatch:#3b65dc" aria-label="Синий" aria-pressed="false"></button><button type="button" data-accent="#8254cc" style="--swatch:#8254cc" aria-label="Фиолетовый" aria-pressed="false"></button><button type="button" data-accent="#bd4774" style="--swatch:#bd4774" aria-label="Розовый" aria-pressed="false"></button><button type="button" data-accent="#bd661f" style="--swatch:#bd661f" aria-label="Оранжевый" aria-pressed="false"></button><button type="button" data-accent="#168080" style="--swatch:#168080" aria-label="Бирюзовый" aria-pressed="false"></button></div><label class="custom-accent" for="accent-color">Свой цвет <input type="color" id="accent-color" value="#2d6a4e"><span id="accent-value">#2d6a4e</span></label><p class="field-help">Изменения видны сразу. «Сохранить» запоминает оформление, «Отмена» возвращает прежнее. Цвет пометок на снимке выбирается отдельно.</p></section>
+      <div class="settings-future">
+        <div class="tool-section-heading"><h3>Работа в фоне</h3><span class="stage-label">Системные адаптеры</span></div>
+        <label class="disabled-setting"><span>Захват области</span><input id="capture-shortcut" placeholder="Ctrl+Shift+PrintScreen"></label>
+        <label class="disabled-setting"><span>Снимок всего экрана</span><input id="screen-shortcut" placeholder="Например: Ctrl+Alt+S"></label>
+        <label class="disabled-setting"><span>Тихий снимок всего экрана</span><input id="silent-shortcut" placeholder="Например: Ctrl+Alt+F12"></label>
+        <label class="disabled-setting"><span>Тихий снимок заданной области</span><input id="silent-area-shortcut" placeholder="Например: Ctrl+Alt+F11"></label>
+        <button type="button" class="button button-secondary" id="select-silent-region" disabled>Задать область тихого скриншота</button>
+        <p class="field-help" id="silent-region-status">Область ещё не задана.</p>
+        <p class="field-help" id="silent-area-native-status">Определяем доступность комбинации тихой области…</p>
+        <p class="field-help">Кнопка один раз открывает выделение с крестиком. После выбора запоминаются только координаты; эта проба не сохраняет снимок. Область сохраняется сразу, комбинация — по кнопке «Сохранить». Затем тихий хоткей снимает тот же прямоугольник без выделения и редактора. При изменении размеров или начала рабочего стола задай область заново.</p>
+        <p class="field-help">Четыре разные комбинации: Ctrl, Shift, Alt, Super + буква, цифра, F1–F24 или PrintScreen. Пустое поле отключает действие с клавиатуры. Для полного и тихих снимков изначально ничего не назначено. В Wayland обычные комбинации подтверждаются системным диалогом.</p>
+        <p class="field-help">«Весь экран» открывает редактор без выделения области. Тихий снимок сразу сохраняет PNG и JSON в папку библиотеки, не открывает редактор, не меняет фокус и не показывает уведомлений. Доступен на Windows/X11; в Wayland выключен, поскольку portal может требовать диалога. Состояние и последняя ошибка видны при следующем открытии полки.</p>
+        <p class="field-help">В Windows/X11 снимается весь рабочий стол, включая несколько мониторов; лимит результата — 16 млн пикселей. Тихий снимок включает видимые окна, в том числе ScreenShorts Pro, если она открыта. В Wayland итоговую поверхность и разрешения определяет portal.</p>
+        <label class="disabled-setting"><span>Запускать свёрнутой в трей</span><input id="start-in-tray" type="checkbox"></label>
+        <p class="field-help" id="native-status">Системные адаптеры запускаются…</p>
+        <label class="disabled-setting"><span>Распознавать ещё в редакторе</span><input id="auto-index" type="checkbox"></label>
+        <p class="field-help" id="ocr-readiness">Определяем доступность локального OCR…</p>
+        <p class="field-help" id="background-readiness">Определяем доступность удаления фона…</p>
+        <p class="field-help">Каждый новый сохранённый снимок автоматически получает фоновый OCR для поиска. Флажок дополнительно запускает распознавание до сохранения, в редакторе. Готовый результат используется повторно, текущая задача продолжается. Ручная остановка OCR сохраняется до явного повторного запуска. Без движка PNG сохраняется со статусом «OCR недоступен». Поиск по смыслу добавляется следующим этапом.</p>
+        <button class="button button-secondary" id="quit-button">Выйти из программы</button>
+      </div><p class="dialog-error" id="settings-error" role="alert" hidden></p>
+    </div>
+    <footer class="dialog-footer"><button class="button button-secondary" data-close-dialog="settings-dialog">Отмена</button><button class="button button-primary" id="save-settings-button">Сохранить</button></footer>
+  </dialog>
+
+  <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
+    <header class="dialog-heading"><div><span class="eyebrow">БЛИЖЕ К ДЕЛУ</span><h2 id="help-title">Как работает ScreenShorts Pro</h2></div><button class="icon-button" data-close-dialog="help-dialog" aria-label="Закрыть справку"><svg class="icon"><use href="#icon-close"/></svg></button></header>
+    <div class="help-content">
+      <p class="help-lead">ScreenShorts Pro сохраняет нужные фрагменты экрана и помогает вернуться к ним.</p>
+      <p>Windows-версия подготовлена для ручной приёмки. В полной папке и portable уже предусмотрены WebView2, OCR и удаление фона для работы без сети; отдельно устанавливать компоненты не нужно. Работа функций на твоём ПК ещё требует проверки.</p>
+      <p>Вариант с установщиком ставится для текущего пользователя и создаёт ярлык в «Пуск». Перед обновлением или удалением полностью выйди через трей. Настройки и библиотека хранятся отдельно от программы и сохраняются при удалении. Для portable распакуй весь архив и переноси всю папку программы. Эти сценарии ещё требуют ручной приёмки.</p>
+      <p>Уведомления сторонних компонентов находятся в папке licenses полного комплекта и внутри поставляемого Python-runtime. Полная приёмка выпуска ещё не завершена.</p>
+      <p>Escape отменяет выделение; после отмены можно снова нажать комбинацию. Чтобы сделать новый снимок при открытом черновике, сначала сохрани его или нажми «Отмена» в редакторе.</p>
+      <h3>Автономный комплект Linux</h3>
+      <p>Linux-комплект рассчитан на Ubuntu 24.04 / Mint 22.x x86_64. GTK/WebKit, OCR и CPU-компоненты удаления фона входят внутрь. Запусти ScreenShortsPro из полной папки или разреши выполнение файла .run: первый запуск распакует его в пользовательский кэш, библиотека хранится отдельно. Возможности захвата и трея зависят от окружения; тихие режимы в Wayland недоступны.</p>
+      <h3>Быстрый старт</h3>
+      <ol class="help-steps"><li>В настройках выбери папку библиотеки и комбинации.</li><li>Нажми «Захватить область», выдели прямоугольник; «Весь экран» снимает без выделения.</li><li>При желании добавь стрелки, обрезку, скрытие или комментарий.</li><li>Нажми Enter или «Сохранить на полку». Комментарий необязателен.</li><li>Дождись OCR в фоне и ищи по слову с картинки или своего комментария. Очередь и ошибки показаны над полкой.</li></ol>
+      <p>Инструкция открывается знаком «?» в шапке или клавишей F1.</p>
+      <h3>Захват и работа в фоне</h3>
+      <p>Первый запуск оставляет окно видимым. При ошибке назначения клавиш на старте окно остаётся открытым даже с настройкой запуска в трее. Закрытие скрывает окно только при доступном трее; открыть его снова можно из значка. «Выйти из программы» завершает процесс полностью.</p>
+      <p>«Захватить область» включает выделение с курсором-крестиком в Windows/X11; Escape отменяет захват. «Весь экран» сразу передаёт полный снимок в редактор. Четыре действия — область, весь экран, тихий экран и тихая заданная область — получают разные комбинации в настройках. Пустое поле отключает соответствующую комбинацию. Обычный полный снимок также доступен из меню трея.</p>
+      <p>«Тихий снимок всего экрана» сразу записывает PNG и JSON в выбранную папку, без редактора, активации приложения и всплывающих уведомлений. Можно продолжать работу в прежнем окне. На снимке остаётся всё видимое, включая ScreenShorts Pro, если она открыта. Незаконченный черновик не заменяется. На Windows и X11 этот режим использует прямой захват; в Wayland он недоступен, поскольку portal может открывать системный диалог. Ошибка показывается на полке при следующем её открытии и хранится до закрытия приложения.</p>
+      <p>Для тихой области нажми «Задать область тихого скриншота» в настройках и выдели прямоугольник. Область запоминается сразу; снимок этой настройки не сохраняется. Назначь четвёртую комбинацию и сохрани настройки: теперь она снимает этот прямоугольник без выделения и редактора. Можно задать область заново той же кнопкой, Escape оставляет прежнюю. Сохраняются физические координаты экрана; если размеры или начало рабочего стола изменятся, нужно выбрать область заново. Тихие режимы работают на Windows/X11.</p>
+      <p>На Windows тихая область также проверяется по расположению и масштабу мониторов. После изменений или чтения старой настройки без этих сведений задай область заново. Переключение к другому приложению, потеря захвата мыши, смена дисплеев или сон отменяют открытое выделение. Доработка ещё требует ручной приёмки.</p>
+      <p>В Windows/X11 полный снимок включает весь рабочий стол со всеми мониторами и ограничен 16 млн пикселей. При превышении используй область. В Wayland захватом, курсором и разрешениями управляет системный portal; полный снимок может требовать подтверждения ОС. PNG также можно импортировать из файла.</p>
+      <p>В настройках видны состояния трея и комбинации. Первый запуск показывает окно. После настройки можно включить дальнейший запуск в трее; без доступного трея окно остаётся видимым. Закрытие окна при работающем трее скрывает его; полный выход доступен через трей и настройки.</p>
+      <h3>Перед сохранением</h3>
+      <p>Окно при старте и после захвата запрашивает размещение по центру текущего экрана. В некоторых окружениях, особенно Wayland, окончательное положение задаёт оконный менеджер.</p>
+      <p>Кнопка «Панель: справа» циклически меняет положение: справа → снизу → слева → сверху. Порядок блоков можно менять левой кнопкой мыши за заголовок с символом ⠿. Если блок не помещается, подведи курсор к краю панели для прокрутки. Escape отменяет перетаскивание. С клавиатуры: фокус на заголовке, затем Alt+стрелки.</p>
+      <p>Двойной щелчок по заголовку блока сворачивает содержимое остальных и отдаёт выбранному блоку свободное место панели. Повтори щелчок или нажми Escape, чтобы вернуть все блоки. С клавиатуры: Enter или пробел на заголовке. Потяни разделитель между панелью и снимком, чтобы изменить её ширину или высоту; на разделителе работают стрелки, с Shift — больший шаг.</p>
+      <p>Размер редактора меняется за правый нижний угол; кнопка «Развернуть» увеличивает рабочее окно и редактор. Само окно приложения также можно растянуть за системные границы. Положение панели, порядок блоков и размеры редактора запоминаются между запусками. Перестановка и разворачивание сохраняют комментарии, текст OCR и правки изображения.</p>
+      <p>Добавь карандаш, линии, обычные/двойные/угловые стрелки или фигуры. «Обрезать» оставляет выбранную область. «Скрыть» непрозрачно закрашивает пиксели чёрным. Цвет и толщина применяются к пометкам. Ctrl+Z отменяет, Ctrl+Shift+Z повторяет действие; в поле комментария действуют обычные клавиши редактирования текста.</p>
+      <p>Комментарий необязателен. Кнопка «Сохранить на полку» записывает итоговый PNG и соседний .png.json. Исходный захват, операции и история отмены не сохраняются рядом. Допустимы PNG до 20 МиБ и 16 млн пикселей.</p>
+      <p>Новые файлы называются «ScreenShorts Pro ГГГГ-ММ-ДД ЧЧ-ММ-СС.png» по местному времени сохранения. Для снимков в одну секунду добавляется (2), (3) и далее; существующие файлы не перезаписываются. Старые записи с прежними именами продолжают открываться.</p>
+      <p>После захвата можно сразу нажать Enter: фокус стоит на сохранении. В комментарии и OCR Enter добавляет новую строку, на кнопках выполняет их действие. После успешного сохранения захвата приложение скрывается в трей, а без трея сворачивается в панель задач; Windows/X11 получают запрос вернуть прежнее окно. ОС может ограничить активацию; в Wayland возвратом управляет оболочка. При ошибке записи редактор остаётся открыт. Импорт PNG из файла после сохранения оставляет полку открытой.</p>
+      <h3>Оформление</h3>
+      <p>Переключатель в шапке меняет светлую и тёмную темы. В настройках выбери основной цвет из шести вариантов или задай свой в палитре. Предпросмотр виден сразу; «Отмена» возвращает прежнее оформление, «Сохранить» запоминает его. Тема меняет интерфейс; пиксели снимка и цвет рисования от неё не меняются.</p>
+      <h3>Удалить фон</h3>
+      <p>В блоке «Редактирование фото» нажми «Удалить фон». Обработка идёт локально на CPU, через общую очередь с OCR; её можно остановить. Прозрачность показана клетчатой подложкой и сохраняется в PNG. «Отменить»/Ctrl+Z возвращает прежний фон, «Повторить» возвращает результат без нового распознавания. На время обработки изменение пикселей и сохранение заблокированы.</p>
+      <p>Лучше всего инструмент подходит для фото предметов и людей. Стекло, волосы и интерфейсы могут вырезаться плохо; кисть правки маски пока не добавлена. В обработку попадает текущая картинка после скрытия и обрезки. При ошибке исходный черновик сохраняется, без облачного fallback. После применения старый OCR сбрасывается и распознаётся уже новый снимок.</p>
+      <details><summary>Разработка из исходников: подготовка компонентов</summary><p>В полном Windows-комплекте компоненты уже находятся в папке программы. Команды ниже относятся к разработке из исходников. Нужен отдельный CPython 3.12/3.13. Подготовка требует интернета и загружает компоненты, но не запускает модель. Сначала полностью выйди из старой копии.</p><p>Linux x86_64: при необходимости установи python3-venv, затем:</p><pre><code>python3 scripts/setup-background.py
+bash scripts/start-dev.sh</code></pre><p>Windows amd64: после сборки приложения, в PowerShell:</p><pre><code>py -3.12 .\scripts\setup-background.py --base-config .\.local-data\build\windows-x64\config\runtime-windows.json
+&amp; .\scripts\start-windows.ps1</code></pre><p>Состояние показано в настройках. Нужны также действующие системные защиты worker; без них обработка завершится ошибкой. Само приложение ничего не скачивает. Если запускаешь своей командой, передай созданный профиль .local-data/background-linux/runtime-linux.json либо background-windows/runtime-windows.json через --runtime-config.</p></details>
+      <p>Для сохранённого снимка со старой ошибкой OCR открой его карточку и нажми «Распознать заново». Новые снимки обрабатываются автоматически после сохранения.</p>
+      <h3>Полка: миниатюры и таблица</h3>
+      <p>Переключай вид, плотность и сортировку над полкой. В таблице нажми на название столбца, повторный щелчок меняет направление. Размер — байты PNG, разрешение — ширина × высота; сортировка разрешения идёт по числу пикселей. При сортировке по дате «По дням» отделяет календарные сутки по местному времени.</p>
+      <p>Наведи курсор на строку таблицы: рядом появятся изображение и короткий OCR с комментарием. «Содержание» приблизительно группирует снимки по общим словам текущего OCR и комментария. Новая модель не запускается; снимки без текста не сравниваются по изображению.</p>
+      <p>Чекбоксы выбирают несколько снимков. Shift — диапазон в текущем порядке, Ctrl+A — все результаты поиска, включая ещё не показанные, Escape — снять выбор. Смена поиска снимает выбор скрытых записей. Имя в таблице и картинка в миниатюрах открывают карточку.</p>
+      <p>Для выбранного доступны копирование PNG, копирование текста, ZIP и «Поделиться»: скопируй файлы и вставь их в письмо или мессенджер через Ctrl+V. ZIP содержит исходные PNG и JSON с OCR и комментариями. За раз — до 1000 снимков, ZIP — до 1 GiB. Отмена диалога сохранения не создаёт архив.</p>
+      <p>Кнопка корзины на карточке, «Удалить» или Delete перемещают PNG и JSON в корзину полки после подтверждения. Открой «Корзина» слева, выдели записи и восстанови. Корзина не очищается автоматически. Вид и сортировка запоминаются; папка открывается по её адресу внизу полки. Кнопка ↻ или F5 перечитывает папку после внешнего добавления файлов.</p>
+      <h3>Библиотека и перенос</h3>
+      <p>Ищи по словам распознанного текста и комментария, открывай карточки и меняй комментарий. Устаревшая правка не перезаписывает более свежую. Пустой запрос показывает все записи, включая снимки без текста. Ошибочные записи перечисляются отдельно и не блокируют остальные. Для PNG без JSON можно создать новую импортированную копию; оригинал останется на месте.</p>
+      <p>PNG и JSON — переносимая пара: копируй их вместе. Выбор другой папки открывает её содержимое, без перемещения старых файлов. Поддержка публикации пары сейчас рассчитана на NTFS/ext4; ограничения других файловых систем предстоит принять отдельно.</p>
+      <h3>Локальный OCR</h3>
+      <p>При установленном Tesseract с русским и английским языками можно распознать текст итоговой картинки, исправить его, скопировать в буфер или выгрузить TXT. Доступность движка показана в настройках; отсутствие компонентов или отказ защиты не мешает сохранить PNG.</p>
+      <p>Каждый новый снимок после сохранения автоматически получает OCR для поиска, если установлен движок. Это касается захвата, импорта, тихих режимов и восстановления копии PNG. Флажок «Распознавать ещё в редакторе» дополнительно включает ранний OCR. Уже готовый результат используется повторно, работающая задача продолжается. Сохранение не ждёт распознавания. По завершении распознавания поиск по текущему запросу обновляется автоматически.</p>
+      <p>Над полкой видны очередь и снимки без OCR; в карточке — результат или причина ошибки. Недоступность движка и отказ защиты не отменяют PNG и не означают отсутствия текста. Ручная остановка OCR сохраняется до явного запуска из карточки; после выхода незавершённые задачи тоже требуют явного запуска. Старые снимки без текста массово не перераспознаются. Изменение пикселей отменяет прежний OCR, комментарии и исправленный текст хранятся отдельно.</p>
+      <p>Только после успешного OCR без текста появляется подсказка: «Текст на снимке не найден. Напиши комментарий для дальнейшего поиска по смыслу». Сохранить можно и без него. Ошибка, ожидание или отсутствие OCR не означают, что текста нет. Сейчас поиск использует слова; смысловой поиск ещё в плане. Визуальное описание в него не входит.</p>
+      <div class="help-callout"><svg class="icon"><use href="#icon-shield"/></svg><p>Снимки и комментарии обрабатываются локально; облачной обработки нет. Доступность трея, клавиш и OCR показана в настройках. Возможности захвата и размещения окна зависят от твоей ОС и оболочки.</p></div>
+    </div>
+    <footer class="dialog-footer"><button class="button button-primary" data-close-dialog="help-dialog">Понятно</button></footer>
+  </dialog>
+
+  <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-title">
+    <header class="dialog-heading"><div><span class="eyebrow">СОХРАНЕНО НА ПОЛКЕ</span><h2 id="detail-title">Скриншот</h2></div><button class="icon-button" data-close-dialog="detail-dialog" aria-label="Закрыть скриншот"><svg class="icon"><use href="#icon-close"/></svg></button></header>
+    <div class="detail-content"><div class="detail-image-wrap"><img id="detail-image" alt="Сохранённый скриншот" hidden><span id="detail-image-status">Загрузка изображения…</span></div><div class="detail-info"><p class="detail-meta" id="detail-meta"></p><h3>Твой комментарий</h3><textarea class="detail-note" id="detail-note" rows="6" maxlength="8000" placeholder="Комментарий необязателен"></textarea><button class="button button-primary" id="save-note-button">Сохранить комментарий</button><p class="dialog-error" id="detail-error" role="alert" hidden></p><p class="field-help">Изменяется только комментарий. Более свежая правка защищена от перезаписи.</p><h3>Распознанный текст</h3><p class="field-help" id="detail-ocr-status"></p><textarea id="detail-ocr-text" rows="6" readonly placeholder="Результат OCR появится здесь"></textarea><div class="tool-buttons"><button id="detail-run-ocr">Распознать заново</button><button id="detail-copy-ocr">В буфер</button><button id="detail-export-ocr">В TXT</button></div><p class="field-help">Поиск по словам OCR и комментария доступен сразу после обработки. Смысловой индекс добавляется следующим этапом.</p></div></div>
+  </dialog>
+
+	<dialog id="recovery-dialog" class="help-dialog" aria-labelledby="recovery-title"><header class="dialog-heading"><div><span class="eyebrow">ЦЕЛОСТНОСТЬ БИБЛИОТЕКИ</span><h2 id="recovery-title">Записи, требующие внимания</h2></div><button class="icon-button" data-close-dialog="recovery-dialog" aria-label="Закрыть">×</button></header><div class="help-content"><p>Остальные записи доступны. Неизвестные и временные файлы автоматически не удаляются. PNG без JSON можно импортировать новой копией; исходный файл останется на месте.</p><div id="recovery-list"></div></div><footer class="dialog-footer"><button class="button button-primary" data-close-dialog="recovery-dialog">Закрыть</button></footer></dialog>
+
+  <dialog id="shelf-delete-dialog" class="shelf-dialog" aria-labelledby="shelf-delete-title"><header class="dialog-heading"><h2 id="shelf-delete-title">Переместить в корзину?</h2><button class="icon-button" data-close-dialog="shelf-delete-dialog" aria-label="Закрыть">×</button></header><div class="help-content"><p id="shelf-delete-description"></p><p>PNG, комментарий и OCR можно восстановить из корзины полки. Автоматической очистки нет.</p><p class="shelf-problems" id="shelf-delete-error" role="alert"></p></div><footer class="dialog-footer"><button class="button button-secondary" data-close-dialog="shelf-delete-dialog">Отмена</button><button class="button button-primary" id="shelf-delete-confirm">В корзину</button></footer></dialog>
+  <dialog id="shelf-share-dialog" class="shelf-dialog" aria-labelledby="shelf-share-title"><header class="dialog-heading"><h2 id="shelf-share-title">Поделиться выбранными снимками</h2><button class="icon-button" data-close-dialog="shelf-share-dialog" aria-label="Закрыть">×</button></header><div class="help-content"><p>Скопируй файлы и вставь их в письмо, мессенджер или папку через Ctrl+V. Для передачи всей записи сохрани ZIP.</p><label><input type="checkbox" id="share-metadata"> Копировать также JSON с OCR и комментариями</label><p class="field-help">ZIP всегда содержит PNG и JSON. Перед отправкой учитывай текст в метаданных.</p><div class="shelf-dialog-actions"><button class="button button-primary" id="share-copy">Копировать файлы</button><button class="button button-secondary" id="share-zip">Сохранить ZIP</button></div><p id="share-status" role="status"></p></div></dialog>
+  <dialog id="shelf-trash-dialog" class="shelf-dialog" aria-labelledby="shelf-trash-title"><header class="dialog-heading"><h2 id="shelf-trash-title">Корзина полки</h2><button class="icon-button" data-close-dialog="shelf-trash-dialog" aria-label="Закрыть">×</button></header><div class="help-content"><p>Удалённые снимки хранятся в этой библиотеке до восстановления. Корзина не участвует в поиске. При совпадении имён существующие файлы не заменяются.</p><label><input type="checkbox" id="trash-select-all"> Выбрать всё</label><div id="shelf-trash-list"></div><p class="shelf-problems" id="trash-error" role="alert"></p></div><footer class="dialog-footer"><span id="trash-count" role="status"></span><button class="button button-primary" id="trash-restore">Восстановить выбранное</button></footer></dialog>
+  <aside class="shelf-preview" id="shelf-preview" role="tooltip" hidden><img alt="Предпросмотр снимка" hidden><p></p><small></small></aside>
+  <template id="screenshot-template"><article class="screenshot-card"><label class="card-select"><input type="checkbox" aria-label="Выделить снимок"></label><button class="card-delete" title="Переместить в корзину" aria-label="Удалить снимок"><svg class="icon"><use href="#icon-trash"/></svg></button><button class="card-open"><span class="card-image"><img alt="" loading="lazy" decoding="async" hidden><span class="thumbnail-status"><svg class="icon"><use href="#icon-image"/></svg></span><span class="card-dimensions"></span></span><span class="card-body"><span class="card-title"></span><span class="card-note"></span><span class="card-facts"></span><span class="card-date"></span></span></button></article></template>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# Скрипты ScreenShorts Pro
+# Скрипты ScreenShooter Pro
 
 Команды выполняются из корня репозитория. Скрипты запуска программы
 отделены от сборщиков: **сборка сама не открывает приложение и не запускает
@@ -10,7 +10,7 @@
 | Команда | Назначение | Результат / данные |
 | --- | --- | --- |
 | bash scripts/start-dev.sh | Компилирует временную программу через go run и запускает её | Данные .local-data/linux-dev; после правок нужен перезапуск |
-| bash scripts/build-linux.sh | Собирает обычный бинарник с системными GTK/WebKit | .local-data/build/linux-x64/ScreenShortsPro и config/runtime-linux.json |
+| bash scripts/build-linux.sh | Собирает обычный бинарник с системными GTK/WebKit | .local-data/build/linux-x64/ScreenShooterPro и config/runtime-linux.json |
 | bash scripts/start-local.sh | Запускает бинарник предыдущей команды; ничего не собирает | Данные .local-data/linux-dev |
 | bash scripts/build-linux-portable.sh | Собирает автономную папку, .run и .tar.gz с CPU-runtime | .local-data/linux-x64/dist/; спецификация, SHA и latest-build.json |
 
@@ -40,7 +40,7 @@ config/runtime-linux.json из исходников. Дополнительны�
 | Команда PowerShell | Назначение | Результат |
 | --- | --- | --- |
 | & .\scripts\build-windows.ps1 | Только dev-EXE, без runtime | .local-data/build/windows-x64/ |
-| .\build-windows.cmd | Полная папка; вызывает -Bundle | .local-data/build/windows-bundle/ScreenShortsPro/ |
+| .\build-windows.cmd | Полная папка; вызывает -Bundle | .local-data/build/windows-bundle/ScreenShooterPro/ |
 | .\build-portable.cmd | Папка и ZIP; вызывает -Portable | Папка как выше; ZIP в .local-data/releases/windows-x64/portable/ |
 | .\build-release.cmd | Папка, ZIP и setup.exe; вызывает -Release | Папка как выше; архивы в .local-data/releases/windows-x64/release/ |
 | & .\scripts\start-windows.ps1 | Запускает готовый dev-EXE либо указанный EXE | Использует профиль и отдельные пользовательские данные |
@@ -54,7 +54,7 @@ config/runtime-linux.json из исходников. Дополнительны�
   только для полных режимов; имена файлов внутри не меняются.
 
 .cmd передают параметры дальше. Для отключения паузы в обёртках есть
-переменная процесса SCREENSHORTS_NO_PAUSE=1.
+переменная процесса SCREENSHOOTER_NO_PAUSE=1.
 [Подробные команды и пути](../docs/windows-quick-build.md).
 
 start-windows.ps1 принимает -Executable, -DataRoot, -RuntimeConfig.

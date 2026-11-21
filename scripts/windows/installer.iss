@@ -1,4 +1,4 @@
-﻿; ScreenShorts Pro: offline, current-user setup. No downloads or runtime setup.
+﻿; ScreenShooter Pro: offline, current-user setup. No downloads or runtime setup.
 #ifndef PayloadRoot
   #error PayloadRoot is required
 #endif
@@ -17,11 +17,11 @@
 
 [Setup]
 AppId={{71FD6640-79D2-4E1D-90E2-C4875579CC72}
-AppName=ScreenShorts Pro
+AppName=ScreenShooter Pro
 AppVersion={#AppVersion}
 VersionInfoVersion={#FileVersion}
-AppPublisher=ScreenShorts Pro
-DefaultDirName={localappdata}\Programs\ScreenShortsPro
+AppPublisher=ScreenShooter Pro
+DefaultDirName={localappdata}\Programs\ScreenShooterPro
 UsePreviousAppDir=yes
 PrivilegesRequired=lowest
 ArchitecturesAllowed=x64os
@@ -29,9 +29,9 @@ ArchitecturesInstallIn64BitMode=x64os
 MinVersion=10.0.19045
 DisableProgramGroupPage=yes
 DisableDirPage=no
-UninstallDisplayIcon={app}\ScreenShortsPro.exe
+UninstallDisplayIcon={app}\ScreenShooterPro.exe
 AppMutex=wails-app-skrinpolka-local-desktop-v1sim
-SetupMutex=ScreenShortsProSetup-v1
+SetupMutex=ScreenShooterProSetup-v1
 CloseApplications=no
 RestartApplications=no
 AlwaysRestart=no
@@ -55,12 +55,12 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
 
 [CustomMessages]
-russian.AppRunning=ScreenShorts Pro работает. Выбери «Выйти» в трее и повтори установку.
-english.AppRunning=ScreenShorts Pro is running. Choose Exit in its tray menu and retry.
+russian.AppRunning=ScreenShooter Pro работает. Выбери «Выйти» в трее и повтори установку.
+english.AppRunning=ScreenShooter Pro is running. Choose Exit in its tray menu and retry.
 russian.LocalFolder=Выбери папку на локальном NTFS без junction и символических ссылок.
 english.LocalFolder=Choose a local NTFS folder without junctions or symbolic links.
-russian.ForeignFolder=В папке есть другие файлы. Выбери пустую папку или прежнюю установку ScreenShorts Pro.
-english.ForeignFolder=Choose an empty folder or the previous ScreenShorts Pro installation. This folder contains other files.
+russian.ForeignFolder=В папке есть другие файлы. Выбери пустую папку или прежнюю установку ScreenShooter Pro.
+english.ForeignFolder=Choose an empty folder or the previous ScreenShooter Pro installation. This folder contains other files.
 russian.LinkedFolder=В папке установки есть ссылки или слишком много файлов. Она не изменена.
 english.LinkedFolder=The installation folder contains links or too many files. It was not changed.
 russian.InvalidInventory=Не удалось прочитать перечень прежних файлов установки. Папка не изменена.
@@ -73,8 +73,8 @@ Source: "{#PayloadRoot}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdir
 Source: "{#SourcePath}\installer-root.txt"; DestDir: "{app}"; DestName: "screenshorts-install-v1.txt"; Flags: ignoreversion
 
 [Icons]
-Name: "{userprograms}\ScreenShorts Pro"; Filename: "{app}\ScreenShortsPro.exe"; WorkingDir: "{app}"
-Name: "{userdesktop}\ScreenShorts Pro"; Filename: "{app}\ScreenShortsPro.exe"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{userprograms}\ScreenShooter Pro"; Filename: "{app}\ScreenShooterPro.exe"; WorkingDir: "{app}"
+Name: "{userdesktop}\ScreenShooter Pro"; Filename: "{app}\ScreenShooterPro.exe"; WorkingDir: "{app}"; Tasks: desktopicon
 
 ; No [Run], [InstallDelete] or [UninstallDelete]. The uninstaller uses its file
 ; log and removes directories only when empty; settings and libraries are not
@@ -194,7 +194,7 @@ begin
   I := Pos('\', Relative);
   if I = 0 then begin
     Top := LowerCase(Relative);
-    if (Top <> 'screenshortspro.exe') and (Top <> 'license') and (Top <> 'readme.txt') and
+    if (Top <> 'screenshooterpro.exe') and (Top <> 'screenshortspro.exe') and (Top <> 'license') and (Top <> 'readme.txt') and
       (Top <> 'components-receipt.json') and (Top <> 'runtime-downloads.json') and
       (Top <> 'release-manifest.json') then Exit;
   end else begin

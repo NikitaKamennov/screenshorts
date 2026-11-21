@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const screenshotNamePrefix = "ScreenShorts Pro "
+const screenshotNamePrefix = "ScreenShooter Pro "
 const screenshotNameTime = "2006-01-02 15-04-05"
 const maxNameCollisions = 1000
 
@@ -35,6 +35,7 @@ func availableScreenshotID(root *os.Root, at time.Time) (string, error) {
 func validScreenshotName(id string) bool {
 	value, ok := strings.CutPrefix(id, screenshotNamePrefix)
 	// Accept names from the earlier source snapshot as well as legacy hex IDs.
+	if !ok { value,ok=strings.CutPrefix(id,"ScreenShorts Pro ") }
 	if !ok { value,ok=strings.CutPrefix(id,"Скринполка ") }
 	if !ok || len(value) < len(screenshotNameTime) || len(value) > len(screenshotNameTime)+len(" (1000)") { return false }
 	stamp, suffix := value[:len(screenshotNameTime)], value[len(screenshotNameTime):]

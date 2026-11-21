@@ -28,7 +28,7 @@ bubblewrap: при этом обработка выдаёт ошибку, ник
 
 ## Одна команда для пересборки
 
-Из корня ScreenShorts Pro:
+Из корня ScreenShooter Pro:
 
 ```bash
 bash scripts/build-linux-portable.sh
@@ -109,17 +109,17 @@ wl-clipboard получает как закреплённый APT-архив с 
 
 | Результат | Назначение |
 | --- | --- |
-| `ScreenShortsPro-<source-id>-<suffix>/` | Полная готовая папка; внутри запускной файл ScreenShortsPro |
-| ScreenShortsPro-Ubuntu24-Mint22-x86_64.run | Один самораспаковывающийся исполняемый файл |
-| ScreenShortsPro-Ubuntu24-Mint22-x86_64.tar.gz | Архив той же готовой папки |
-| ScreenShortsPro-Ubuntu24-Mint22-x86_64.txt | Спецификация для страницы скачивания |
+| `ScreenShooterPro-<source-id>-<suffix>/` | Полная готовая папка; внутри запускной файл ScreenShooterPro |
+| ScreenShooterPro-Ubuntu24-Mint22-x86_64.run | Один самораспаковывающийся исполняемый файл |
+| ScreenShooterPro-Ubuntu24-Mint22-x86_64.tar.gz | Архив той же готовой папки |
+| ScreenShooterPro-Ubuntu24-Mint22-x86_64.txt | Спецификация для страницы скачивания |
 | SHA256SUMS.txt | Контрольные суммы файлов выпуска |
 | latest-build.json | Указатель на папку последней сборки |
 
 Новая сборка публикуется из staging; предыдущая папка сохраняется.
 
 Для распространения нужен .run либо весь архив .tar.gz; один
-`libexec/ScreenShortsPro` не содержит runtime. Спецификацию и SHA-файл положи
+`libexec/ScreenShooterPro` не содержит runtime. Спецификацию и SHA-файл положи
 рядом со скачиванием. Готовые файлы исключены из исходного Git-репозитория.
 
 .run — статический Go-launcher с вложенным tar.gz: проверяет SHA-256,
@@ -132,18 +132,18 @@ launcher папки. FUSE, установщик, tar и Python для распа
 Из каталога, куда скачан или скопирован файл:
 
 ~~~bash
-chmod +x ScreenShortsPro-Ubuntu24-Mint22-x86_64.run
-./ScreenShortsPro-Ubuntu24-Mint22-x86_64.run
+chmod +x ScreenShooterPro-Ubuntu24-Mint22-x86_64.run
+./ScreenShooterPro-Ubuntu24-Mint22-x86_64.run
 ~~~
 
 Или распакуй архив .tar.gz целиком файловым менеджером, открой терминал
 внутри извлечённой папки и запусти:
 
 ~~~bash
-./ScreenShortsPro
+./ScreenShooterPro
 ~~~
 
-Не запускай libexec/ScreenShortsPro напрямую: окружение полного комплекта
+Не запускай libexec/ScreenShooterPro напрямую: окружение полного комплекта
 настраивает внешний launcher. Права администратора для запуска не нужны.
 
 Для отдельной ручной пробы добавь к команде запуска

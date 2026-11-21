@@ -108,7 +108,7 @@ func (d *Desktop) ExportShelfZIP(value core.ShelfSelection) (bool, error) {
 	if _, err := d.core.ShelfFilePaths(value, false); err != nil {
 		return false, err
 	}
-	path, err := wruntime.SaveFileDialog(ctx, wruntime.SaveDialogOptions{Title: "Архив выбранных снимков и метаданных", DefaultFilename: "ScreenShorts " + time.Now().Format("2006-01-02 15-04-05") + ".zip", Filters: []wruntime.FileFilter{{DisplayName: "ZIP-архив", Pattern: "*.zip"}}})
+	path, err := wruntime.SaveFileDialog(ctx, wruntime.SaveDialogOptions{Title: "Архив выбранных снимков и метаданных", DefaultFilename: "ScreenShooter " + time.Now().Format("2006-01-02 15-04-05") + ".zip", Filters: []wruntime.FileFilter{{DisplayName: "ZIP-архив", Pattern: "*.zip"}}})
 	if err != nil || path == "" {
 		return false, err
 	}

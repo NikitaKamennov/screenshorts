@@ -82,7 +82,7 @@ func (s *windowsService) initializeNative() error {
 	icon, _, _ := user32.NewProc("LoadIconW").Call(0, 32512)
 	s.icon = notifyIcon{Window:window, ID:1, Flags:1|2|4, Callback:wmTray, Icon:icon}
 	s.icon.Size = uint32(unsafe.Sizeof(s.icon))
-	copy(s.icon.Tip[:], syscall.StringToUTF16("ScreenShorts Pro — новый снимок / открыть полку"))
+	copy(s.icon.Tip[:], syscall.StringToUTF16("ScreenShooter Pro — новый снимок / открыть библиотеку"))
 	name, _ := syscall.UTF16PtrFromString("TaskbarCreated")
 	message, _, _ := user32.NewProc("RegisterWindowMessageW").Call(uintptr(unsafe.Pointer(name)))
 	s.taskbarMessage = uint32(message)

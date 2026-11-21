@@ -10,75 +10,75 @@ if (([int]$Bundle.IsPresent + [int]$Portable.IsPresent + [int]$Release.IsPresent
 if ($OutputTag -and (-not ($Bundle -or $Portable -or $Release) -or $OutputTag -cnotmatch '^[a-z0-9][a-z0-9-]{0,47}$')) { throw '-OutputTag допускает строчные латинские буквы, цифры и дефис, только в полном режиме сборки.' }
 if ($Bundle -or $Portable -or $Release) {
     try {
-        Assert-ScreenShortsWindows
+        Assert-ScreenShooterWindows
         . (Join-Path $PSScriptRoot 'windows\downloads.ps1')
         . (Join-Path $PSScriptRoot 'windows\archives.ps1')
         . (Join-Path $PSScriptRoot 'windows\components.ps1')
         . (Join-Path $PSScriptRoot 'windows\notices.ps1')
         . (Join-Path $PSScriptRoot 'windows\package.ps1')
         . (Join-Path $PSScriptRoot 'windows\installer.ps1')
-        New-ScreenShortsWindowsPackage ([IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))) -Portable:$Portable -Release:$Release -Offline:$Offline -OutputTag $OutputTag
+        New-ScreenShooterWindowsPackage ([IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))) -Portable:$Portable -Release:$Release -Offline:$Offline -OutputTag $OutputTag
         exit 0
     } catch { Write-Error $_ -ErrorAction Continue; exit 1 }
 }
 
-$ScreenShortsBuildLock = $null
-$ScreenShortsStage = $null
-$ScreenShortsBackup = $null
-$ScreenShortsRoot = [IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
-$ScreenShortsBuildRoot = Join-Path $ScreenShortsRoot '.local-data\build'
-$ScreenShortsOutput = Join-Path $ScreenShortsBuildRoot 'windows-x64'
-$ScreenShortsExe = Join-Path $ScreenShortsOutput 'ScreenShortsPro.exe'
+$ScreenShooterBuildLock = $null
+$ScreenShooterStage = $null
+$ScreenShooterBackup = $null
+$ScreenShooterRoot = [IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
+$ScreenShooterBuildRoot = Join-Path $ScreenShooterRoot '.local-data\build'
+$ScreenShooterOutput = Join-Path $ScreenShooterBuildRoot 'windows-x64'
+$ScreenShooterExe = Join-Path $ScreenShooterOutput 'ScreenShooterPro.exe'
 try {
-    Assert-ScreenShortsWindows
-    $ScreenShortsGo = Get-Command go -CommandType Application -ErrorAction SilentlyContinue
-    if (-not $ScreenShortsGo) { throw 'Установи Go 1.25 или новее на машине сборки; смотри README.md.' }
-    $null = New-ScreenShortsDirectory $ScreenShortsBuildRoot $ScreenShortsRoot
-    $ScreenShortsBuildLock = Open-ScreenShortsBuildLock (Join-Path $ScreenShortsBuildRoot 'windows-x64.lock') $ScreenShortsRoot
-    if (Test-Path -LiteralPath $ScreenShortsOutput) {
-        Assert-ScreenShortsDevOutput $ScreenShortsOutput $ScreenShortsRoot
-        Assert-ScreenShortsExecutableStopped $ScreenShortsExe
+    Assert-ScreenShooterWindows
+    $ScreenShooterGo = Get-Command go -CommandType Application -ErrorAction SilentlyContinue
+    if (-not $ScreenShooterGo) { throw 'Установи Go 1.25 или новее на машине сборки; смотри README.md.' }
+    $null = New-ScreenShooterDirectory $ScreenShooterBuildRoot $ScreenShooterRoot
+    $ScreenShooterBuildLock = Open-ScreenShooterBuildLock (Join-Path $ScreenShooterBuildRoot 'windows-x64.lock') $ScreenShooterRoot
+    if (Test-Path -LiteralPath $ScreenShooterOutput) {
+        Assert-ScreenShooterDevOutput $ScreenShooterOutput $ScreenShooterRoot
+        Assert-ScreenShooterExecutableStopped $ScreenShooterExe
     }
-    $ScreenShortsStage = New-ScreenShortsOwnedOutput (Join-Path $ScreenShortsBuildRoot ('.windows-x64-stage-' + [Guid]::NewGuid().ToString('N'))) $ScreenShortsRoot 'dev'
-    $ScreenShortsStageExe = Join-Path $ScreenShortsStage 'ScreenShortsPro.exe'
-    Invoke-ScreenShortsGoBuild $ScreenShortsRoot $ScreenShortsStageExe -Offline:$Offline
-    $ScreenShortsConfig = New-ScreenShortsDirectory (Join-Path $ScreenShortsStage 'config') $ScreenShortsRoot
-    Copy-Item -LiteralPath (Join-Path $ScreenShortsRoot 'config\runtime-windows.json') -Destination $ScreenShortsConfig
-    if (Test-Path -LiteralPath $ScreenShortsOutput) {
-        Assert-ScreenShortsDevOutput $ScreenShortsOutput $ScreenShortsRoot
-        Assert-ScreenShortsExecutableStopped $ScreenShortsExe
-        $ScreenShortsBackup = Assert-ScreenShortsOutputPath (Join-Path $ScreenShortsBuildRoot ('.windows-x64-backup-' + [Guid]::NewGuid().ToString('N'))) $ScreenShortsRoot
-        $null = Assert-ScreenShortsOutputPath $ScreenShortsOutput $ScreenShortsRoot
-        Move-Item -LiteralPath $ScreenShortsOutput -Destination $ScreenShortsBackup
+    $ScreenShooterStage = New-ScreenShooterOwnedOutput (Join-Path $ScreenShooterBuildRoot ('.windows-x64-stage-' + [Guid]::NewGuid().ToString('N'))) $ScreenShooterRoot 'dev'
+    $ScreenShooterStageExe = Join-Path $ScreenShooterStage 'ScreenShooterPro.exe'
+    Invoke-ScreenShooterGoBuild $ScreenShooterRoot $ScreenShooterStageExe -Offline:$Offline
+    $ScreenShooterConfig = New-ScreenShooterDirectory (Join-Path $ScreenShooterStage 'config') $ScreenShooterRoot
+    Copy-Item -LiteralPath (Join-Path $ScreenShooterRoot 'config\runtime-windows.json') -Destination $ScreenShooterConfig
+    if (Test-Path -LiteralPath $ScreenShooterOutput) {
+        Assert-ScreenShooterDevOutput $ScreenShooterOutput $ScreenShooterRoot
+        Assert-ScreenShooterExecutableStopped $ScreenShooterExe
+        $ScreenShooterBackup = Assert-ScreenShooterOutputPath (Join-Path $ScreenShooterBuildRoot ('.windows-x64-backup-' + [Guid]::NewGuid().ToString('N'))) $ScreenShooterRoot
+        $null = Assert-ScreenShooterOutputPath $ScreenShooterOutput $ScreenShooterRoot
+        Move-Item -LiteralPath $ScreenShooterOutput -Destination $ScreenShooterBackup
     }
     try {
-        $null = Assert-ScreenShortsOutputPath $ScreenShortsStage $ScreenShortsRoot
-        $null = Assert-ScreenShortsOutputPath $ScreenShortsOutput $ScreenShortsRoot
-        Move-Item -LiteralPath $ScreenShortsStage -Destination $ScreenShortsOutput
-        $ScreenShortsStage = $null
+        $null = Assert-ScreenShooterOutputPath $ScreenShooterStage $ScreenShooterRoot
+        $null = Assert-ScreenShooterOutputPath $ScreenShooterOutput $ScreenShooterRoot
+        Move-Item -LiteralPath $ScreenShooterStage -Destination $ScreenShooterOutput
+        $ScreenShooterStage = $null
     } catch {
-        if ($ScreenShortsBackup -and -not (Test-Path -LiteralPath $ScreenShortsOutput)) {
-            $null = Assert-ScreenShortsOwnedOutput $ScreenShortsBackup $ScreenShortsRoot 'dev'
-            $null = Assert-ScreenShortsOutputPath $ScreenShortsOutput $ScreenShortsRoot
-            Move-Item -LiteralPath $ScreenShortsBackup -Destination $ScreenShortsOutput
-            $ScreenShortsBackup = $null
+        if ($ScreenShooterBackup -and -not (Test-Path -LiteralPath $ScreenShooterOutput)) {
+            $null = Assert-ScreenShooterOwnedOutput $ScreenShooterBackup $ScreenShooterRoot 'dev'
+            $null = Assert-ScreenShooterOutputPath $ScreenShooterOutput $ScreenShooterRoot
+            Move-Item -LiteralPath $ScreenShooterBackup -Destination $ScreenShooterOutput
+            $ScreenShooterBackup = $null
         }
         throw
     }
-    if ($ScreenShortsBackup) {
-        try { Remove-ScreenShortsOwnedOutput $ScreenShortsBackup $ScreenShortsRoot 'dev'; $ScreenShortsBackup = $null }
-        catch { Write-Warning "Новая сборка готова; прежняя папка оставлена в $ScreenShortsBackup. $($_.Exception.Message)" }
+    if ($ScreenShooterBackup) {
+        try { Remove-ScreenShooterOwnedOutput $ScreenShooterBackup $ScreenShooterRoot 'dev'; $ScreenShooterBackup = $null }
+        catch { Write-Warning "Новая сборка готова; прежняя папка оставлена в $ScreenShooterBackup. $($_.Exception.Message)" }
     }
-    Write-Host "Подготовлен EXE разработчика: $ScreenShortsExe"
+    Write-Host "Подготовлен EXE разработчика: $ScreenShooterExe"
     Write-Host 'Этот режим пока использует системный WebView2 и не комплектует OCR/Python.'
     Write-Host 'Приложение, тесты, OCR и модели не запускались. Самостоятельный комплект: -Bundle, -Portable или -Release.'
 } catch {
     Write-Error $_ -ErrorAction Continue
     exit 1
 } finally {
-    if ($ScreenShortsStage -and (Test-Path -LiteralPath $ScreenShortsStage)) {
-        try { Remove-ScreenShortsOwnedOutput $ScreenShortsStage $ScreenShortsRoot 'dev' }
-        catch { Write-Warning "Временная папка оставлена: $ScreenShortsStage. $($_.Exception.Message)" }
+    if ($ScreenShooterStage -and (Test-Path -LiteralPath $ScreenShooterStage)) {
+        try { Remove-ScreenShooterOwnedOutput $ScreenShooterStage $ScreenShooterRoot 'dev' }
+        catch { Write-Warning "Временная папка оставлена: $ScreenShooterStage. $($_.Exception.Message)" }
     }
-    if ($ScreenShortsBuildLock) { $ScreenShortsBuildLock.Dispose() }
+    if ($ScreenShooterBuildLock) { $ScreenShooterBuildLock.Dispose() }
 }

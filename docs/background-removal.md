@@ -66,7 +66,7 @@ Linux-venv. Новый профиль сохраняет OCR из указанн
 в прежнем `%LOCALAPPDATA%\Skrinpolka\`. Для прямого EXE укажи его явно:
 
 ```powershell
-& .\.local-data\build\windows-x64\ScreenShortsPro.exe --runtime-config "$PWD\.local-data\background-windows\runtime-windows.json"
+& .\.local-data\build\windows-x64\ScreenShooterPro.exe --runtime-config "$PWD\.local-data\background-windows\runtime-windows.json"
 ```
 
 Обработка использует прежние Windows AppContainer/Job Object. Проверка на

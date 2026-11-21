@@ -31,7 +31,7 @@ func (a *App) SaveShelfPreferences(value ShelfPreferences) (ShelfPreferences, er
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	if value.View != "grid" && value.View != "table" {
-		return value, errors.New("Неизвестный вид полки")
+		return value, errors.New("Неизвестный вид библиотеки")
 	}
 	switch value.Sort {
 	case "date", "name", "content", "size", "resolution", "ocr":

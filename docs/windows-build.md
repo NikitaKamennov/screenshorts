@@ -21,7 +21,7 @@ Linux, WSL, Wine и кросс-компиляция не заменяют про
 Первая команда готовит:
 
 ~~~text
-.local-data/build/windows-x64/ScreenShortsPro.exe
+.local-data/build/windows-x64/ScreenShooterPro.exe
 .local-data/build/windows-x64/config/runtime-windows.json
 ~~~
 
@@ -48,14 +48,14 @@ Linux, WSL, Wine и кросс-компиляция не заменяют про
 Для независимой лаборатории:
 
 ~~~powershell
-& .\scripts\start-windows.ps1 -DataRoot 'C:\ScreenShorts Lab'
+& .\scripts\start-windows.ps1 -DataRoot 'C:\ScreenShooter Lab'
 ~~~
 
 Launcher принимает только -Executable, -DataRoot и -RuntimeConfig.
 -DataRoot — абсолютный путь на локальном NTFS. Пример другого готового EXE:
 
 ~~~powershell
-& .\scripts\start-windows.ps1 -Executable '.\.local-data\build\windows-bundle\ScreenShortsPro\ScreenShortsPro.exe' -DataRoot 'C:\ScreenShorts Lab'
+& .\scripts\start-windows.ps1 -Executable '.\.local-data\build\windows-bundle\ScreenShooterPro\ScreenShooterPro.exe' -DataRoot 'C:\ScreenShooter Lab'
 ~~~
 
 Для стандартного dev-EXE launcher сначала ищет подготовленный профиль
@@ -73,7 +73,7 @@ Dev-профиль ожидает структуру рядом с EXE:
 
 ~~~text
 windows-x64/
-  ScreenShortsPro.exe
+  ScreenShooterPro.exe
   config/runtime-windows.json
   tools/tesseract/
     tesseract.exe
@@ -99,7 +99,7 @@ tesseract.exe без его DLL и языков и не устанавливай
 
 ~~~powershell
 py -3.12 .\scripts\setup-background.py --base-config .\.local-data\build\windows-x64\config\runtime-windows.json
-& .\scripts\start-windows.ps1 -DataRoot 'C:\ScreenShorts Lab'
+& .\scripts\start-windows.ps1 -DataRoot 'C:\ScreenShooter Lab'
 ~~~
 
 Первая команда явно загружает закреплённые CPU-компоненты в собственную

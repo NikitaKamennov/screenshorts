@@ -1,14 +1,14 @@
 ﻿# Shared by native Windows preparation/build scripts. Dot-sourcing does not
 # launch any tool, application, worker or network operation.
 
-function Assert-ScreenShortsWindows {
+function Assert-ScreenShooterWindows {
     if ($env:OS -ne 'Windows_NT' -or $env:PROCESSOR_ARCHITECTURE -ne 'AMD64' -or [IntPtr]::Size -ne 8) {
         throw 'Нужна нативная Windows x64 и 64-разрядный PowerShell.'
     }
 }
 
 # Check the complete existing path down to the project root before mutation.
-function Assert-ScreenShortsOutputPath {
+function Assert-ScreenShooterOutputPath {
     param([string]$Path, [string]$ProjectRoot)
     $taskRoot = [IO.Path]::GetFullPath($ProjectRoot).TrimEnd([char[]]@('\', '/'))
     $taskPath = [IO.Path]::GetFullPath($Path)
@@ -30,16 +30,16 @@ function Assert-ScreenShortsOutputPath {
     return $taskPath
 }
 
-function New-ScreenShortsDirectory {
+function New-ScreenShooterDirectory {
     param([string]$Path, [string]$ProjectRoot)
-    $taskPath = Assert-ScreenShortsOutputPath $Path $ProjectRoot
+    $taskPath = Assert-ScreenShooterOutputPath $Path $ProjectRoot
     New-Item -ItemType Directory -Path $taskPath -Force | Out-Null
     return $taskPath
 }
 
-function New-ScreenShortsOwnedOutput {
+function New-ScreenShooterOwnedOutput {
     param([string]$Path, [string]$ProjectRoot, [string]$Kind)
-    $taskPath = Assert-ScreenShortsOutputPath $Path $ProjectRoot
+    $taskPath = Assert-ScreenShooterOutputPath $Path $ProjectRoot
     if (Test-Path -LiteralPath $taskPath) { throw "Временный выход уже существует: $taskPath" }
     New-Item -ItemType Directory -Path $taskPath | Out-Null
     $taskOwner = [ordered]@{
@@ -52,11 +52,11 @@ function New-ScreenShortsOwnedOutput {
     return $taskPath
 }
 
-function Assert-ScreenShortsOwnedOutput {
+function Assert-ScreenShooterOwnedOutput {
     param([string]$Path, [string]$ProjectRoot, [string]$Kind)
-    $taskPath = Assert-ScreenShortsOutputPath $Path $ProjectRoot
+    $taskPath = Assert-ScreenShooterOutputPath $Path $ProjectRoot
     if (-not (Test-Path -LiteralPath $taskPath -PathType Container)) { throw "Нет выходного каталога: $taskPath" }
-    $taskMarker = Assert-ScreenShortsOutputPath (Join-Path $taskPath '.screenshorts-output.json') $ProjectRoot
+    $taskMarker = Assert-ScreenShooterOutputPath (Join-Path $taskPath '.screenshorts-output.json') $ProjectRoot
     if (-not (Test-Path -LiteralPath $taskMarker -PathType Leaf)) {
         throw "Каталог без маркера сборщика не изменён: $taskPath. Сохрани/перемести прежнюю папку вручную и повтори сборку."
     }
@@ -69,9 +69,9 @@ function Assert-ScreenShortsOwnedOutput {
     return $taskPath
 }
 
-function Remove-ScreenShortsOwnedOutput {
+function Remove-ScreenShooterOwnedOutput {
     param([string]$Path, [string]$ProjectRoot, [string]$Kind)
-    $taskPath = Assert-ScreenShortsOwnedOutput $Path $ProjectRoot $Kind
+    $taskPath = Assert-ScreenShooterOwnedOutput $Path $ProjectRoot $Kind
     # Walk without following reparse points before a recursive delete. Unknown
     # links stop cleanup; they are never traversed through another shell.
     $taskPending = [Collections.Generic.Stack[string]]::new()
@@ -85,29 +85,29 @@ function Remove-ScreenShortsOwnedOutput {
             if ($taskItem.PSIsContainer) { $taskPending.Push($taskItem.FullName) }
         }
     }
-    $null = Assert-ScreenShortsOutputPath $taskPath $ProjectRoot
+    $null = Assert-ScreenShooterOutputPath $taskPath $ProjectRoot
     Remove-Item -LiteralPath $taskPath -Recurse -Force
 }
 
-function Open-ScreenShortsBuildLock {
+function Open-ScreenShooterBuildLock {
     param([string]$Path, [string]$ProjectRoot)
-    $taskPath = Assert-ScreenShortsOutputPath $Path $ProjectRoot
+    $taskPath = Assert-ScreenShooterOutputPath $Path $ProjectRoot
     try { return [IO.File]::Open($taskPath, [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None) }
     catch { throw "Выход занят другой сборкой либо блокировка недоступна: $taskPath. $($_.Exception.Message)" }
 }
 
-function Assert-ScreenShortsDevOutput {
+function Assert-ScreenShooterDevOutput {
     param([string]$Path, [string]$ProjectRoot)
-    $taskPath = Assert-ScreenShortsOwnedOutput $Path $ProjectRoot 'dev'
+    $taskPath = Assert-ScreenShooterOwnedOutput $Path $ProjectRoot 'dev'
     foreach ($taskItem in Get-ChildItem -LiteralPath $taskPath -Force) {
         if (($taskItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
             throw "Junction/symlink в dev-выходе: $($taskItem.FullName)"
         }
-        if ($taskItem.Name -notin @('.screenshorts-output.json', 'ScreenShortsPro.exe', 'config')) {
+        if ($taskItem.Name -notin @('.screenshorts-output.json', 'ScreenShooterPro.exe', 'ScreenShortsPro.exe', 'config')) {
             throw "В dev-каталоге есть дополнительные файлы: $($taskItem.FullName). Сохрани/перемести их вручную; сборщик их не удаляет."
         }
     }
-    $taskConfig = Assert-ScreenShortsOutputPath (Join-Path $taskPath 'config') $ProjectRoot
+    $taskConfig = Assert-ScreenShooterOutputPath (Join-Path $taskPath 'config') $ProjectRoot
     if (Test-Path -LiteralPath $taskConfig) {
         foreach ($taskItem in Get-ChildItem -LiteralPath $taskConfig -Force) {
             if (($taskItem.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
@@ -120,20 +120,20 @@ function Assert-ScreenShortsDevOutput {
     }
 }
 
-function Assert-ScreenShortsExecutableStopped {
+function Assert-ScreenShooterExecutableStopped {
     param([string]$Executable)
     $taskExpected = [IO.Path]::GetFullPath($Executable)
-    foreach ($taskProcess in Get-Process -Name 'ScreenShortsPro' -ErrorAction SilentlyContinue) {
+    foreach ($taskProcess in Get-Process -Name 'ScreenShooterPro','ScreenShortsPro' -ErrorAction SilentlyContinue) {
         try { $taskProcessPath = $taskProcess.Path }
-        catch { throw "Не удалось определить путь ScreenShortsPro PID $($taskProcess.Id); закрой приложение перед сборкой." }
-        if (-not $taskProcessPath) { throw 'Не удалось определить путь работающего ScreenShortsPro; закрой приложение перед сборкой.' }
+        catch { throw "Не удалось определить путь ScreenShooterPro PID $($taskProcess.Id); закрой приложение перед сборкой." }
+        if (-not $taskProcessPath) { throw 'Не удалось определить путь работающего ScreenShooterPro; закрой приложение перед сборкой.' }
         if ([string]::Equals($taskProcessPath, $taskExpected, [StringComparison]::OrdinalIgnoreCase)) {
             throw "Приложение запущено: $taskExpected. Выбери «Выйти» и повтори сборку."
         }
     }
 }
 
-function ConvertTo-ScreenShortsWindowsArgument {
+function ConvertTo-ScreenShooterWindowsArgument {
     param([string]$Value)
     # Double backslashes before quotes and at the end of a quoted argument.
     $taskEscaped = [regex]::Replace($Value, '(\\*)"', '$1$1\"')
@@ -141,27 +141,27 @@ function ConvertTo-ScreenShortsWindowsArgument {
     return '"' + $taskEscaped + '"'
 }
 
-function Publish-ScreenShortsOwnedOutput {
+function Publish-ScreenShooterOwnedOutput {
     param([string]$Stage, [string]$Destination, [string]$ProjectRoot, [string]$Kind)
-    $taskStage = Assert-ScreenShortsOwnedOutput $Stage $ProjectRoot $Kind
-    $taskDestination = Assert-ScreenShortsOutputPath $Destination $ProjectRoot
+    $taskStage = Assert-ScreenShooterOwnedOutput $Stage $ProjectRoot $Kind
+    $taskDestination = Assert-ScreenShooterOutputPath $Destination $ProjectRoot
     $taskBackup = $null
     if (Test-Path -LiteralPath $taskDestination) {
-        $null = Assert-ScreenShortsOwnedOutput $taskDestination $ProjectRoot $Kind
-        $taskBackup = Assert-ScreenShortsOutputPath ($taskDestination + '.backup-' + [Guid]::NewGuid().ToString('N')) $ProjectRoot
+        $null = Assert-ScreenShooterOwnedOutput $taskDestination $ProjectRoot $Kind
+        $taskBackup = Assert-ScreenShooterOutputPath ($taskDestination + '.backup-' + [Guid]::NewGuid().ToString('N')) $ProjectRoot
         Move-Item -LiteralPath $taskDestination -Destination $taskBackup
     }
     try { Move-Item -LiteralPath $taskStage -Destination $taskDestination }
     catch {
         if ($taskBackup -and -not (Test-Path -LiteralPath $taskDestination)) {
-            $null = Assert-ScreenShortsOwnedOutput $taskBackup $ProjectRoot $Kind
-            $null = Assert-ScreenShortsOutputPath $taskDestination $ProjectRoot
+            $null = Assert-ScreenShooterOwnedOutput $taskBackup $ProjectRoot $Kind
+            $null = Assert-ScreenShooterOutputPath $taskDestination $ProjectRoot
             Move-Item -LiteralPath $taskBackup -Destination $taskDestination
         }
         throw
     }
     if ($taskBackup) {
-        try { Remove-ScreenShortsOwnedOutput $taskBackup $ProjectRoot $Kind }
+        try { Remove-ScreenShooterOwnedOutput $taskBackup $ProjectRoot $Kind }
         catch { Write-Warning "Предыдущий выход оставлен в $taskBackup. $($_.Exception.Message)" }
     }
     return $taskDestination

@@ -174,7 +174,7 @@ func(d *Desktop)ExportOCRText(text string)(bool,error){
 	if !utf8.ValidString(text)||len(text)>512<<10{return false,fmt.Errorf("Текст превышает 512 KiB")}
 	d.dialog.Lock();defer d.dialog.Unlock()
 	ctx,err:=d.nativeContext();if err!=nil{return false,err}
-	path,err:=wruntime.SaveFileDialog(ctx,wruntime.SaveDialogOptions{Title:"Сохранить распознанный текст",DefaultFilename:"ScreenShorts Pro text.txt",Filters:[]wruntime.FileFilter{{DisplayName:"Текст UTF-8",Pattern:"*.txt"}}})
+	path,err:=wruntime.SaveFileDialog(ctx,wruntime.SaveDialogOptions{Title:"Сохранить распознанный текст",DefaultFilename:"ScreenShooter Pro text.txt",Filters:[]wruntime.FileFilter{{DisplayName:"Текст UTF-8",Pattern:"*.txt"}}})
 	if err!=nil||path==""{return false,err}
 	file,err:=os.CreateTemp(filepath.Dir(path),".skrinpolka-text-*.tmp");if err!=nil{return false,err};defer os.Remove(file.Name())
 	if _,err:=file.WriteString(text);err!=nil{file.Close();return false,err};if err:=file.Sync();err!=nil{file.Close();return false,err};if err:=file.Close();err!=nil{return false,err}

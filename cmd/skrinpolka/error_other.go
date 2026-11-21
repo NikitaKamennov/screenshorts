@@ -8,5 +8,5 @@ import (
 )
 
 func reportStartupError(err error) {
-	fmt.Fprintln(os.Stderr, "ScreenShorts Pro:", err)
+	fmt.Fprintln(os.Stderr, "ScreenShooter Pro:", err)
 }

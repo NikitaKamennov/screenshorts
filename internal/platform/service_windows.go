@@ -232,7 +232,7 @@ func windowsProcedure(window uintptr,message uint32,wparam,lparam uintptr)uintpt
 
 func (s *windowsService) popupMenu(){
 	menu,_,_:=user32.NewProc("CreatePopupMenu").Call();if menu==0{return};defer user32.NewProc("DestroyMenu").Call(menu)
-	for _, item:=range []struct{id int;label string}{{1,"Выделить область"},{5,"Весь экран"},{2,"Открыть полку"},{3,"Настройки"},{4,"Выйти"}}{text,_:=syscall.UTF16PtrFromString(item.label);user32.NewProc("AppendMenuW").Call(menu,0,uintptr(item.id),uintptr(unsafe.Pointer(text)))}
+	for _, item:=range []struct{id int;label string}{{1,"Выделить область"},{5,"Весь экран"},{2,"Открыть библиотеку"},{3,"Настройки"},{4,"Выйти"}}{text,_:=syscall.UTF16PtrFromString(item.label);user32.NewProc("AppendMenuW").Call(menu,0,uintptr(item.id),uintptr(unsafe.Pointer(text)))}
 	var point winPoint;user32.NewProc("GetCursorPos").Call(uintptr(unsafe.Pointer(&point)));user32.NewProc("SetForegroundWindow").Call(s.window)
 	selected,_,_:=user32.NewProc("TrackPopupMenu").Call(menu,0x0100|0x0002,uintptr(point.X),uintptr(point.Y),0,s.window,0)
 	var action func();switch selected{case 1:action=s.actions.Capture;case 5:action=s.actions.CaptureScreen;case 2:action=s.actions.OpenLibrary;case 3:action=s.actions.OpenSettings;case 4:action=s.actions.Quit};if action!=nil{go action()}

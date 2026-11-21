@@ -16,8 +16,8 @@ import (
 // opt-in so normal package tests do not capture a user's screen or take focus.
 func requireWindowsDesktop(t *testing.T) {
 	t.Helper()
-	if os.Getenv("SCREENSHORTS_WINDOWS_NATIVE_TESTS") != "1" {
-		t.Skip("set SCREENSHORTS_WINDOWS_NATIVE_TESTS=1 for interactive Windows capture")
+	if os.Getenv("SCREENSHOOTER_WINDOWS_NATIVE_TESTS") != "1" {
+		t.Skip("set SCREENSHOOTER_WINDOWS_NATIVE_TESTS=1 for interactive Windows capture")
 	}
 }
 

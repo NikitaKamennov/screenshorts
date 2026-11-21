@@ -66,7 +66,7 @@ func extract(file *os.File, offset, size int64, expected []byte, destination str
 		}
 		name := filepath.Clean(header.Name)
 		if !filepath.IsLocal(name) || len(name) > 4096 || strings.ContainsRune(name, '\\') ||
-			(name != "ScreenShortsPro" && !strings.HasPrefix(name, "ScreenShortsPro/")) {
+			(name != "ScreenShooterPro" && !strings.HasPrefix(name, "ScreenShooterPro/")) {
 			return fmt.Errorf("недопустимый путь в комплекте")
 		}
 		target := filepath.Join(destination, name)
@@ -101,7 +101,7 @@ func extract(file *os.File, offset, size int64, expected []byte, destination str
 			}
 		case tar.TypeLink:
 			link := filepath.Clean(header.Linkname)
-			if !filepath.IsLocal(link) || !strings.HasPrefix(link, "ScreenShortsPro/") {
+			if !filepath.IsLocal(link) || !strings.HasPrefix(link, "ScreenShooterPro/") {
 				return fmt.Errorf("недопустимая ссылка в комплекте")
 			}
 			source := filepath.Join(destination, link)
@@ -177,7 +177,7 @@ func run() error {
 		if err := extract(file, info.Size()-footerSize-size, size, footer[16:], temporary); err != nil {
 			return err
 		}
-		folder := filepath.Join(temporary, "ScreenShortsPro")
+		folder := filepath.Join(temporary, "ScreenShooterPro")
 		if err := os.WriteFile(filepath.Join(folder, ".complete"), []byte(id), 0600); err != nil {
 			return err
 		}
@@ -194,7 +194,7 @@ func run() error {
 	if err != nil || string(marker) != id {
 		return fmt.Errorf("неполный кэш: %s", destination)
 	}
-	launcher := filepath.Join(destination, "ScreenShortsPro")
+	launcher := filepath.Join(destination, "ScreenShooterPro")
 	entry, err := os.Lstat(launcher)
 	if err != nil || !entry.Mode().IsRegular() {
 		return fmt.Errorf("launcher комплекта отсутствует")
@@ -209,7 +209,7 @@ func run() error {
 
 func main() {
 	if err := run(); err != nil {
-		fmt.Fprintln(os.Stderr, "ScreenShorts Pro:", err)
+		fmt.Fprintln(os.Stderr, "ScreenShooter Pro:", err)
 		os.Exit(1)
 	}
 }

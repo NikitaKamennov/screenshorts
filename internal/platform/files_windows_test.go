@@ -12,7 +12,7 @@ import (
 )
 
 func TestWindowsFileClipboard(t *testing.T) {
-	if os.Getenv("SCREENSHORTS_WINDOWS_NATIVE_TESTS") != "1" {
+	if os.Getenv("SCREENSHOOTER_WINDOWS_NATIVE_TESTS") != "1" {
 		t.Skip("opt-in native Windows clipboard test")
 	}
 	runtime.LockOSThread()

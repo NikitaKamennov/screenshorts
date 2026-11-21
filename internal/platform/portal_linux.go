@@ -106,8 +106,8 @@ func (s *linuxService) bindPortalShortcuts(ctx context.Context, desired Shortcut
 	defer func() { if !success { s.closePortalSession(session) } }()
 	shortcuts := []portalShortcut{}
 	for _, binding := range []struct{ id, description, trigger string }{
-		{"capture", "ScreenShorts Pro: выделить область экрана", desired.Area},
-		{"capture-screen", "ScreenShorts Pro: снимок всего экрана", desired.Screen},
+		{"capture", "ScreenShooter Pro: выделить область экрана", desired.Area},
+		{"capture-screen", "ScreenShooter Pro: снимок всего экрана", desired.Screen},
 	} {
 		if binding.trigger == "" { continue }
 		trigger := strings.ReplaceAll(strings.ToUpper(binding.trigger), "PRINTSCREEN", "Print")

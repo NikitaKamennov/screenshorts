@@ -43,7 +43,7 @@ def prepare_model(destination, model):
         return
     handle, temporary = tempfile.mkstemp(prefix=".u2netp-", suffix=".part", dir=destination.parent)
     try:
-        request = urllib.request.Request(model["url"], headers={"User-Agent": "ScreenShortsPro-runtime-setup"})
+        request = urllib.request.Request(model["url"], headers={"User-Agent": "ScreenShooterPro-runtime-setup"})
         digest = hashlib.sha256()
         size = 0
         with os.fdopen(handle, "wb") as target, urllib.request.urlopen(request, timeout=60) as source:

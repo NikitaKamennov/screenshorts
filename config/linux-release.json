@@ -2,9 +2,9 @@
   "schema": "screenshorts-linux-release-v1",
   "version": "0.1.0-linux-portable",
   "architecture": "x86_64",
-  "archive_filename": "ScreenShortsPro-Ubuntu24-Mint22-x86_64.tar.gz",
-  "executable_filename": "ScreenShortsPro-Ubuntu24-Mint22-x86_64.run",
-  "specification_filename": "ScreenShortsPro-Ubuntu24-Mint22-x86_64.txt",
+  "archive_filename": "ScreenShooterPro-Ubuntu24-Mint22-x86_64.tar.gz",
+  "executable_filename": "ScreenShooterPro-Ubuntu24-Mint22-x86_64.run",
+  "specification_filename": "ScreenShooterPro-Ubuntu24-Mint22-x86_64.txt",
   "baseline": "Ubuntu 24.04 / Linux Mint 22, glibc >= 2.39",
   "acceptance": "manual-pending",
   "packages": [

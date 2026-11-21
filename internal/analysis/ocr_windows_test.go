@@ -13,8 +13,8 @@ import (
 // This test starts the bundled OCR under the real Windows sandbox. It is
 // opt-in and uses only the explicitly supplied synthetic test PNG/profile.
 func TestWindowsBundledOCR(t *testing.T) {
-	if os.Getenv("SCREENSHORTS_WINDOWS_OCR_TESTS") != "1" { t.Skip("interactive Windows OCR integration is opt-in") }
-	profile, input := os.Getenv("SCREENSHORTS_TEST_RUNTIME"), os.Getenv("SCREENSHORTS_TEST_PNG")
+	if os.Getenv("SCREENSHOOTER_WINDOWS_OCR_TESTS") != "1" { t.Skip("interactive Windows OCR integration is opt-in") }
+	profile, input := os.Getenv("SCREENSHOOTER_TEST_RUNTIME"), os.Getenv("SCREENSHOOTER_TEST_PNG")
 	if profile == "" || input == "" { t.Fatal("synthetic PNG and bundled runtime profile are required") }
 	png, err := os.ReadFile(input)
 	if err != nil { t.Fatal(err) }

@@ -46,7 +46,7 @@
     }
     async render() {
       const epoch=++this.epoch;this.hidePreview();this.controls();
-      this.observer?.disconnect();for(const job of this.imageQueue.splice(0))job.reject(new Error("Обновление полки"));
+      this.observer?.disconnect();for(const job of this.imageQueue.splice(0))job.reject(new Error("Обновление библиотеки"));
       this.sorting=true;this.updateSelection();
       let groups=[];
       if(this.prefs.sort==="content") {
@@ -67,10 +67,10 @@
       $("gallery").hidden=table;$("shelf-table-wrap").hidden=!table||!this.items.length;
       $("gallery").classList.toggle("is-compact",this.prefs.compact);$("shelf-table").classList.toggle("is-compact",this.prefs.compact);
       $("empty-state").hidden=this.items.length>0;
-      $("empty-title").textContent=this.query?"Пока ничего не нашлось":"Твоя полка начинается с одного скрина";
-      $("empty-description").textContent=this.query?"Попробуй слово из OCR или комментария.":"Захвати область или импортируй PNG. Все сохранённые скриншоты будут здесь.";
+      $("empty-title").textContent=this.query?"Пока ничего не нашлось":"Сохранённых снимков пока нет";
+      $("empty-description").textContent=this.query?"Поиск по слову из распознанного текста или комментария.":"Захват области или импорт PNG добавит первый снимок в библиотеку.";
       $("empty-import-button").hidden=Boolean(this.query);$("clear-search-button").hidden=!this.query;
-      $("result-count").textContent=`${this.query?"Найдено":"На полке"}: ${this.items.length}`;
+      $("result-count").textContent=`${this.query?"Найдено":"В библиотеке"}: ${this.items.length}`;
       $("load-more-button").hidden=this.items.length<=this.limit;
       $("load-more-button").textContent=`Показать ещё (${Math.min(48,Math.max(0,this.items.length-this.limit))})`;
       $("shelf-status").textContent=this.prefs.sort==="content"?"Похожие слова в OCR и комментариях → группы. Без визуального анализа; совпадение темы приблизительное.":"Чекбоксы — выбор, Shift — диапазон, Ctrl+A — все результаты, Escape — снять выбор.";
@@ -182,7 +182,7 @@
     askDelete(ids=[...this.chosen]) {
       if(this.busy||this.sorting||!ids.length)return;
       this.hidePreview();this.deleteSelection=this.selection(ids);
-      $("shelf-delete-description").textContent=ids.length===1?`«${this.items.find(item=>item.id===ids[0])?.image_file||ids[0]}» будет убран с полки.`:`Выбрано снимков: ${ids.length}. Все они будут убраны с полки.`;
+      $("shelf-delete-description").textContent=ids.length===1?`«${this.items.find(item=>item.id===ids[0])?.image_file||ids[0]}» будет убран из библиотеки.`:`Выбрано снимков: ${ids.length}. Все они будут убраны из библиотеки.`;
       $("shelf-delete-error").textContent="";$("shelf-delete-dialog").showModal();
     }
     async confirmDelete() {
@@ -258,5 +258,5 @@
       });
     }
   }
-  window.ScreenShortsShelf=Shelf;
+  window.ScreenShooterShelf=Shelf;
 })();

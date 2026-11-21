@@ -11,9 +11,9 @@ import (
 
 // Preserve a visible startup error when Windows is built with windowsgui.
 func reportStartupError(err error) {
-	fmt.Fprintln(os.Stderr, "ScreenShorts Pro:", err)
+	fmt.Fprintln(os.Stderr, "ScreenShooter Pro:", err)
 	message, messageErr := syscall.UTF16PtrFromString(err.Error())
-	title, titleErr := syscall.UTF16PtrFromString("ScreenShorts Pro — ошибка запуска")
+	title, titleErr := syscall.UTF16PtrFromString("ScreenShooter Pro — ошибка запуска")
 	if messageErr != nil || titleErr != nil {
 		return
 	}

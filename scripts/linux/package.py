@@ -374,7 +374,7 @@ def go_notices(bundle, environment):
     folder.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(goroot / "LICENSE", folder / "LICENSE")
     used = set()
-    for line in output(["go", "version", "-m", bundle / "libexec/ScreenShortsPro"], env=environment).splitlines():
+    for line in output(["go", "version", "-m", bundle / "libexec/ScreenShooterPro"], env=environment).splitlines():
         fields = line.split()
         if len(fields) >= 2 and fields[0] == "dep":
             used.add(fields[1])
@@ -399,8 +399,8 @@ def go_notices(bundle, environment):
 
 
 def launchers(bundle):
-    shutil.copyfile(ROOT / "scripts/linux/launch.sh", bundle / "ScreenShortsPro")
-    (bundle / "ScreenShortsPro").chmod(0o755)
+    shutil.copyfile(ROOT / "scripts/linux/launch.sh", bundle / "ScreenShooterPro")
+    (bundle / "ScreenShooterPro").chmod(0o755)
     binaries = bundle / "bin"
     binaries.mkdir(exist_ok=True)
     for name in ["bwrap", "xdg-dbus-proxy", "xclip", "wl-copy"]:
@@ -416,7 +416,7 @@ def launchers(bundle):
                    'GDK_PIXBUF_MODULEDIR GTK_IM_MODULE_FILE GSETTINGS_SCHEMA_DIR FONTCONFIG_FILE '
                    'WEBKIT_EXEC_PATH WEBKIT_INJECTED_BUNDLE_PATH GST_PLUGIN_SYSTEM_PATH_1_0 '
                    'LIBGL_DRIVERS_PATH __EGL_VENDOR_LIBRARY_FILENAMES\n'
-                   'export XDG_DATA_DIRS="${SCREENSHORTS_HOST_DATA_DIRS:-/usr/local/share:/usr/share}"\n'
+                   'export XDG_DATA_DIRS="${SCREENSHOOTER_HOST_DATA_DIRS:-/usr/local/share:/usr/share}"\n'
                    'exec /usr/bin/xdg-open "$@"\n')
     xdg.chmod(0o755)
 
@@ -470,15 +470,15 @@ def main():
         runtime = prepare_runtime(config, args.offline, args.refresh_runtime)
         stage = Path(tempfile.mkdtemp(prefix="bundle-stage-", dir=BASE))
         try:
-            bundle = stage / "ScreenShortsPro"
+            bundle = stage / "ScreenShooterPro"
             shutil.copytree(runtime, bundle, copy_function=os.link)
             environment = {**os.environ, "GOTOOLCHAIN": "local"}
             if args.offline:
                 environment.update(GOPROXY="off", GOSUMDB="off")
-            go_build(bundle / "libexec/ScreenShortsPro", "./cmd/skrinpolka", environment, desktop=True)
+            go_build(bundle / "libexec/ScreenShooterPro", "./cmd/skrinpolka", environment, desktop=True)
             go_build(bundle / "runtime/bin/worker-guard", "./cmd/linux-worker-guard", environment)
             go_build(stage / "portable-launcher", "./cmd/linux-portable", environment)
-            native = output(["readelf", "-d", bundle / "libexec/ScreenShortsPro"])
+            native = output(["readelf", "-d", bundle / "libexec/ScreenShooterPro"])
             for name in re.findall(r"\(NEEDED\).*?\[(.*?)\]", native):
                 if not BASE_GLIBC.match(name) and not (bundle / "runtime/lib" / name).is_file():
                     raise RuntimeError(f"GUI dependency missing: {name}; refresh/review runtime")
@@ -514,7 +514,7 @@ def main():
             print("Compressing complete Linux folder", flush=True)
             with archive.open("wb") as raw, gzip.GzipFile(filename="", fileobj=raw, mode="wb", compresslevel=6, mtime=0) as compressed:
                 with tarfile.open(fileobj=compressed, mode="w|", format=tarfile.PAX_FORMAT) as tar:
-                    tar.add(bundle, arcname="ScreenShortsPro")
+                    tar.add(bundle, arcname="ScreenShooterPro")
             executable = stage / config["executable_filename"]
             shutil.copyfile(stage / "portable-launcher", executable)
             with executable.open("ab") as stream, archive.open("rb") as payload:
@@ -524,7 +524,7 @@ def main():
             distribution = owned_directory(BASE / "dist")
             specification = stage / config["specification_filename"]
             shutil.copyfile(ROOT / "docs/linux-download-spec.txt", specification)
-            folder = distribution / ("ScreenShortsPro-" + identity[:12] + "-" + uuid.uuid4().hex[:6])
+            folder = distribution / ("ScreenShooterPro-" + identity[:12] + "-" + uuid.uuid4().hex[:6])
             bundle.rename(folder)
             for artifact in [archive, executable, specification]:
                 os.replace(artifact, distribution / artifact.name)

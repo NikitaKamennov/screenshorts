@@ -343,7 +343,7 @@
       await state.bridge.ImportSelectedPNG(state.selected.token, byID("screenshot-note").value);
       clearSelection();
       byID("editor-dialog").close();
-      toast("Скриншот сохранён на полку.");
+      toast("Скриншот сохранён в библиотеку.");
       if(selected.from_capture){
         try{const result=await state.bridge.FinishSavedCapture(selected.token);if(result.message)toast(result.message);}
         catch(error){showError("page-error",`Снимок сохранён. Не удалось свернуть приложение: ${errorText(error)}`);}
@@ -580,7 +580,7 @@
       byID("empty-state").hidden = false;
       return;
     }
-    shelf = new window.ScreenShortsShelf({bridge:()=>state.bridge,open:item=>{void openDetail(item);},refresh:refreshLibrary,error:error=>showError("page-error",error),toast,date:dateLabel,ocrLabel});
+    shelf = new window.ScreenShooterShelf({bridge:()=>state.bridge,open:item=>{void openDetail(item);},refresh:refreshLibrary,error:error=>showError("page-error",error),toast,date:dateLabel,ocrLabel});
     updateImportButtons();
 	if(window.runtime?.EventsOn){
 		window.runtime.EventsOn("capture:ready",selected=>{void showSelection(selected).catch(error=>showError("page-error",error));});

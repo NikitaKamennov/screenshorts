@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SKRINPOLKA_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
-SKRINPOLKA_BINARY="$SKRINPOLKA_ROOT/.local-data/build/linux-x64/ScreenShortsPro"
+SKRINPOLKA_BINARY="$SKRINPOLKA_ROOT/.local-data/build/linux-x64/ScreenShooterPro"
 if [[ ! -x "$SKRINPOLKA_BINARY" ]]; then
   echo 'Сначала подготовь каркас: bash scripts/build-linux.sh' >&2
   exit 1

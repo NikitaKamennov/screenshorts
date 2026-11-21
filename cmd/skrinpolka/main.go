@@ -69,7 +69,7 @@ func (d *Desktop) shutdown(context.Context) {
 	d.native = nil
 	d.nativeMu.Unlock()
 	if service != nil {
-		if err := service.Close(); err != nil { fmt.Fprintln(os.Stderr, "ScreenShorts Pro: завершение системного сервиса:", err) }
+		if err := service.Close(); err != nil { fmt.Fprintln(os.Stderr, "ScreenShooter Pro: завершение системного сервиса:", err) }
 	}
 	d.selection.Lock()
 	d.pending = nil
@@ -233,7 +233,7 @@ func (d *Desktop) SelectLibraryDirectory() (string, error) {
 		defaultDirectory = ""
 	}
 	return wruntime.OpenDirectoryDialog(ctx, wruntime.OpenDialogOptions{
-		Title: "Выбери папку библиотеки ScreenShorts Pro",
+		Title: "Выбери папку библиотеки ScreenShooter Pro",
 		DefaultDirectory: defaultDirectory,
 	})
 }
@@ -301,7 +301,7 @@ func run() error {
 	windowOptions,err:=nativeWindowOptions(dataRoot)
 	if err!=nil{return err}
 	return wails.Run(&options.App{
-		Title: "ScreenShorts Pro",
+		Title: "ScreenShooter Pro",
 		Width: 1320, Height: 900, MinWidth: 980, MinHeight: 680,
 		StartHidden: false, HideWindowOnClose: false,
 		BackgroundColour: background,

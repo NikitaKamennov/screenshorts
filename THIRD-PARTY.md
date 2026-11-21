@@ -1,4 +1,4 @@
-# Сторонние компоненты ScreenShorts Pro
+# Сторонние компоненты ScreenShooter Pro
 
 ## Linux-комплект
 

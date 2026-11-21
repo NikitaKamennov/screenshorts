@@ -32,6 +32,7 @@
 !/docs/roadmap.md
 !/docs/product-spec.md
 !/docs/data-format.md
+!/docs/branding.md
 !/docs/scaffold-provenance.md
 !/docs/local-workers.md
 !/docs/background-removal.md
@@ -71,6 +72,7 @@ settings.json
 *.local.yaml
 *.local.yml
 *-private.*
+ScreenShooter Pro*.txt
 ScreenShorts Pro*.txt
 скринполка-текст.txt
 

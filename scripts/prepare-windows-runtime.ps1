@@ -12,51 +12,51 @@ Set-StrictMode -Version Latest
 . (Join-Path $PSScriptRoot 'windows\archives.ps1')
 . (Join-Path $PSScriptRoot 'windows\components.ps1')
 . (Join-Path $PSScriptRoot 'windows\notices.ps1')
-$ScreenShortsRoot = [IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
-$ScreenShortsCacheLock = $null
-$ScreenShortsOldTLS = [Net.ServicePointManager]::SecurityProtocol
+$ScreenShooterRoot = [IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
+$ScreenShooterCacheLock = $null
+$ScreenShooterOldTLS = [Net.ServicePointManager]::SecurityProtocol
 try {
-    Assert-ScreenShortsWindows
-    $ScreenShortsManifest = Read-ScreenShortsWindowsDownloads $ScreenShortsRoot
-    $ScreenShortsCache = Get-ScreenShortsWindowsCache $ScreenShortsRoot
-    $ScreenShortsCacheLock = Open-ScreenShortsBuildLock (Join-Path $ScreenShortsCache '.runtime-downloads.lock') $ScreenShortsRoot
-    $ScreenShortsArtifacts = @($ScreenShortsManifest.artifacts | Where-Object { $_.role -ne 'installer-tool' -or $IncludeInstaller })
-    $ScreenShortsMissing = @($ScreenShortsArtifacts | Where-Object { -not (Test-Path -LiteralPath (Join-Path $ScreenShortsCache $_.filename) -PathType Leaf) })
-    if ($Offline -and $ScreenShortsMissing.Count -gt 0) {
-        throw ('В офлайн-кэше отсутствуют: ' + (($ScreenShortsMissing | ForEach-Object { $_.filename }) -join ', '))
+    Assert-ScreenShooterWindows
+    $ScreenShooterManifest = Read-ScreenShooterWindowsDownloads $ScreenShooterRoot
+    $ScreenShooterCache = Get-ScreenShooterWindowsCache $ScreenShooterRoot
+    $ScreenShooterCacheLock = Open-ScreenShooterBuildLock (Join-Path $ScreenShooterCache '.runtime-downloads.lock') $ScreenShooterRoot
+    $ScreenShooterArtifacts = @($ScreenShooterManifest.artifacts | Where-Object { $_.role -ne 'installer-tool' -or $IncludeInstaller })
+    $ScreenShooterMissing = @($ScreenShooterArtifacts | Where-Object { -not (Test-Path -LiteralPath (Join-Path $ScreenShooterCache $_.filename) -PathType Leaf) })
+    if ($Offline -and $ScreenShooterMissing.Count -gt 0) {
+        throw ('В офлайн-кэше отсутствуют: ' + (($ScreenShooterMissing | ForEach-Object { $_.filename }) -join ', '))
     }
-    $ScreenShortsNeeded = [long]268435456
-    foreach ($ScreenShortsMissingArtifact in $ScreenShortsMissing) { $ScreenShortsNeeded += [long]$ScreenShortsMissingArtifact.bytes }
-    $ScreenShortsDrive = [IO.DriveInfo]::new([IO.Path]::GetPathRoot($ScreenShortsCache))
-    if ($ScreenShortsDrive.AvailableFreeSpace -lt $ScreenShortsNeeded) { throw "Недостаточно места: требуется $ScreenShortsNeeded байт с резервом." }
-    [Net.ServicePointManager]::SecurityProtocol = $ScreenShortsOldTLS -bor [Net.SecurityProtocolType]::Tls12
-    $ScreenShortsPrepared = @(foreach ($ScreenShortsArtifact in $ScreenShortsArtifacts) {
-        $null = Receive-ScreenShortsArtifact $ScreenShortsArtifact $ScreenShortsCache $ScreenShortsRoot -Offline:$Offline
-        [ordered]@{ id=$ScreenShortsArtifact.id; filename=$ScreenShortsArtifact.filename; bytes=$ScreenShortsArtifact.bytes; sha256=$ScreenShortsArtifact.sha256 }
+    $ScreenShooterNeeded = [long]268435456
+    foreach ($ScreenShooterMissingArtifact in $ScreenShooterMissing) { $ScreenShooterNeeded += [long]$ScreenShooterMissingArtifact.bytes }
+    $ScreenShooterDrive = [IO.DriveInfo]::new([IO.Path]::GetPathRoot($ScreenShooterCache))
+    if ($ScreenShooterDrive.AvailableFreeSpace -lt $ScreenShooterNeeded) { throw "Недостаточно места: требуется $ScreenShooterNeeded байт с резервом." }
+    [Net.ServicePointManager]::SecurityProtocol = $ScreenShooterOldTLS -bor [Net.SecurityProtocolType]::Tls12
+    $ScreenShooterPrepared = @(foreach ($ScreenShooterArtifact in $ScreenShooterArtifacts) {
+        $null = Receive-ScreenShooterArtifact $ScreenShooterArtifact $ScreenShooterCache $ScreenShooterRoot -Offline:$Offline
+        [ordered]@{ id=$ScreenShooterArtifact.id; filename=$ScreenShooterArtifact.filename; bytes=$ScreenShooterArtifact.bytes; sha256=$ScreenShooterArtifact.sha256 }
     })
-    $ScreenShortsReceipt = [ordered]@{
+    $ScreenShooterReceipt = [ordered]@{
         schema = 'screenshorts-windows-download-receipt-v1'
-        manifest_sha256 = (Get-FileHash -LiteralPath (Join-Path $ScreenShortsRoot 'config\windows-downloads.json') -Algorithm SHA256).Hash.ToLowerInvariant()
+        manifest_sha256 = (Get-FileHash -LiteralPath (Join-Path $ScreenShooterRoot 'config\windows-downloads.json') -Algorithm SHA256).Hash.ToLowerInvariant()
         prepared_utc = [DateTime]::UtcNow.ToString('o')
         include_installer = [bool]$IncludeInstaller
-        artifacts = $ScreenShortsPrepared
+        artifacts = $ScreenShooterPrepared
     }
-    $ScreenShortsReceiptPath = Assert-ScreenShortsOutputPath (Join-Path $ScreenShortsCache 'download-receipt.json') $ScreenShortsRoot
-    $ScreenShortsReceiptTemporary = Assert-ScreenShortsOutputPath (Join-Path $ScreenShortsCache ('.receipt-' + [Guid]::NewGuid().ToString('N') + '.tmp')) $ScreenShortsRoot
+    $ScreenShooterReceiptPath = Assert-ScreenShooterOutputPath (Join-Path $ScreenShooterCache 'download-receipt.json') $ScreenShooterRoot
+    $ScreenShooterReceiptTemporary = Assert-ScreenShooterOutputPath (Join-Path $ScreenShooterCache ('.receipt-' + [Guid]::NewGuid().ToString('N') + '.tmp')) $ScreenShooterRoot
     try {
-        [IO.File]::WriteAllText($ScreenShortsReceiptTemporary, ($ScreenShortsReceipt | ConvertTo-Json -Depth 8) + [Environment]::NewLine, [Text.UTF8Encoding]::new($false))
-        if (Test-Path -LiteralPath $ScreenShortsReceiptPath) { [IO.File]::Replace($ScreenShortsReceiptTemporary, $ScreenShortsReceiptPath, [NullString]::Value) }
-        else { [IO.File]::Move($ScreenShortsReceiptTemporary, $ScreenShortsReceiptPath) }
+        [IO.File]::WriteAllText($ScreenShooterReceiptTemporary, ($ScreenShooterReceipt | ConvertTo-Json -Depth 8) + [Environment]::NewLine, [Text.UTF8Encoding]::new($false))
+        if (Test-Path -LiteralPath $ScreenShooterReceiptPath) { [IO.File]::Replace($ScreenShooterReceiptTemporary, $ScreenShooterReceiptPath, [NullString]::Value) }
+        else { [IO.File]::Move($ScreenShooterReceiptTemporary, $ScreenShooterReceiptPath) }
     } finally {
-        if (Test-Path -LiteralPath $ScreenShortsReceiptTemporary) {
-            $null = Assert-ScreenShortsOutputPath $ScreenShortsReceiptTemporary $ScreenShortsRoot
-            Remove-Item -LiteralPath $ScreenShortsReceiptTemporary -Force
+        if (Test-Path -LiteralPath $ScreenShooterReceiptTemporary) {
+            $null = Assert-ScreenShooterOutputPath $ScreenShooterReceiptTemporary $ScreenShooterRoot
+            Remove-Item -LiteralPath $ScreenShooterReceiptTemporary -Force
         }
     }
-    Write-Host "Закреплённые компоненты подготовлены: $ScreenShortsCache"
+    Write-Host "Закреплённые компоненты подготовлены: $ScreenShooterCache"
     if ($Extract) {
-        $ScreenShortsComponents = New-ScreenShortsRuntimeComponents $ScreenShortsManifest $ScreenShortsCache $ScreenShortsRoot
-        Write-Host "Распакованы компоненты приложения: $ScreenShortsComponents"
+        $ScreenShooterComponents = New-ScreenShooterRuntimeComponents $ScreenShooterManifest $ScreenShooterCache $ScreenShooterRoot
+        Write-Host "Распакованы компоненты приложения: $ScreenShooterComponents"
         Write-Host 'Работал только закреплённый распаковщик. Установщики, приложение, Python, тесты, OCR и модели не запускались.'
     } else { Write-Host 'Подготовлены только файлы: установщики, архиваторы, приложение, тесты, OCR и модели не запускались.' }
     exit 0
@@ -64,6 +64,6 @@ try {
     Write-Error $_ -ErrorAction Continue
     exit 1
 } finally {
-    [Net.ServicePointManager]::SecurityProtocol = $ScreenShortsOldTLS
-    if ($ScreenShortsCacheLock) { $ScreenShortsCacheLock.Dispose() }
+    [Net.ServicePointManager]::SecurityProtocol = $ScreenShooterOldTLS
+    if ($ScreenShooterCacheLock) { $ScreenShooterCacheLock.Dispose() }
 }

@@ -1,0 +1,53 @@
+/* ScreenShooter Pro: neutral workspace, capture mark and consistent controls.
+   Accent variables still come from the user's saved appearance preferences. */
+:root{--bg:#f5f7fa;--surface:#fff;--surface-soft:#eef2f6;--field:#fff;--ink:#202c39;--muted:#637386;--line:#dce3eb;--checker-a:#e7ecf1;--checker-b:#f4f7fa;--radius:12px}
+:root[data-theme="dark"]{--bg:#111821;--surface:#1c242e;--surface-soft:#232f3d;--field:#17202a;--ink:#edf2f7;--muted:#abb9c9;--line:#354354;--checker-a:#202b37;--checker-b:#293543}
+body{font-family:"Segoe UI Variable","Segoe UI",Inter,system-ui,sans-serif;letter-spacing:0}
+.sidebar{width:256px;padding:30px 16px 24px;background:var(--surface);border-right-color:var(--line)}
+.brand{gap:11px;padding:0 8px;letter-spacing:0;align-items:center}
+.brand-mark{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--accent-fill);color:var(--on-accent);box-shadow:0 4px 12px color-mix(in srgb,var(--accent-fill) 16%,transparent)}
+.brand-mark svg{width:29px;height:29px;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.brand-wordmark{min-width:0;display:flex;flex-direction:column;gap:7px}
+.brand-title{display:flex;align-items:center;gap:6px;font-size:16px;font-weight:750;letter-spacing:-.6px;white-space:nowrap;line-height:1}
+.brand-edition{font-size:8px;letter-spacing:.8px;font-weight:700;color:var(--green);background:var(--light-green);border:1px solid color-mix(in srgb,var(--accent-fill) 17%,var(--line));border-radius:4px;padding:4px}
+.brand-caption{font-size:9px;letter-spacing:.15px;font-weight:450;margin:0;color:var(--muted);line-height:1.25}
+.sidebar-section-label{margin-top:40px;margin-bottom:12px;font-size:9px;letter-spacing:1.5px}
+.nav-button{min-height:45px;border-radius:10px;font-size:13px;gap:11px;margin-bottom:4px}
+.nav-button:hover{background:var(--surface-soft)}
+.nav-button.is-active{background:var(--light-green);color:var(--green);font-weight:650}
+.nav-count{font-size:10px;min-width:26px;border-radius:6px;padding:4px 6px;background:var(--surface);color:var(--green)}
+.sidebar-hint{font-size:10px;padding-top:15px}.small-dot{background:var(--green);width:5px;height:5px}
+.privacy-note{margin:22px 8px 0;padding-top:19px;font-size:10px;line-height:1.65;border-color:var(--line)}
+.privacy-note .icon{color:var(--green);width:18px;height:18px}
+.main-content{margin-left:256px;width:calc(100% - 256px);padding:34px 38px 0;max-width:1920px}
+.page-heading{align-items:flex-start;gap:24px;padding-bottom:26px;border-bottom:1px solid var(--line)}
+.page-intro{padding-top:8px;min-width:220px}.eyebrow{font-size:9px;font-weight:650;letter-spacing:1.7px;margin-bottom:10px}
+h1{font-size:34px;line-height:1.15;font-weight:650;letter-spacing:-1.1px}
+.page-description{max-width:365px;margin-top:11px;font-size:12px;line-height:1.65}
+.header-actions{display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex-shrink:0}
+.header-utilities,.capture-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.header-utilities .button{min-height:32px;padding:6px 11px;font-size:11px}
+.header-help{width:32px;height:32px;border-radius:8px}.header-help .icon{width:17px;height:17px}
+.button{border-radius:9px;font-weight:550;min-height:38px;padding:9px 13px}
+.button-primary{box-shadow:0 3px 10px color-mix(in srgb,var(--accent-fill) 14%,transparent)}
+.button-secondary:hover{border-color:color-mix(in srgb,var(--accent-fill) 36%,var(--line));background:var(--surface-soft)}
+.library-toolbar{padding-top:24px}.search-field{border-radius:11px;min-height:44px;box-shadow:0 1px 2px #15203303}
+.search-field:focus-within{border-color:var(--green);box-shadow:0 0 0 3px var(--light-green)}
+.search-field input{font-size:13px}.result-count{font-variant-numeric:tabular-nums}
+#index-status{font-size:11px;line-height:1.65;margin-top:12px}
+.shelf-controls{gap:10px;margin-top:14px}.view-switch{border-radius:9px}
+.shelf-controls select{border-radius:8px}.selection-bar{border-radius:11px;background:var(--surface);box-shadow:0 2px 5px #101d2c03}
+.selection-bar button{border-radius:8px}.selection-summary{font-variant-numeric:tabular-nums}
+.shelf-hint{line-height:1.6;margin-top:9px}.gallery{gap:18px;padding-top:20px}
+.screenshot-card{border-radius:12px;box-shadow:0 2px 6px #1b2c4004;transition:border-color .15s,box-shadow .15s}
+.screenshot-card:hover{border-color:var(--green);box-shadow:0 5px 18px #14263a0a}
+.card-body{gap:7px;padding:14px}.card-title{font-size:12px;font-weight:600}.card-date{font-size:10px;line-height:1.5}
+.shelf-table-wrap{border-radius:11px}.shelf-table th{background:var(--surface-soft)}
+.shelf-table th button{font-weight:550}.shelf-table .table-group td{background:var(--surface-soft)}
+.empty-state{padding:60px 0;justify-content:center}.capture-empty-art{display:grid;place-items:center;width:112px;height:112px;border:1px solid var(--line);border-radius:28px;background:var(--surface);margin-bottom:26px;box-shadow:0 12px 32px #15253706}
+.capture-empty-art svg{width:72px;height:72px;stroke:var(--green);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.empty-state .small-label{font-size:9px;letter-spacing:1.3px}.empty-state h2{font-size:22px;font-weight:600;letter-spacing:-.4px}.empty-state p{font-size:12px;max-width:430px}
+.library-footer{font-size:10px;gap:16px;border-color:var(--line)}
+@media(min-width:1500px){.main-content{padding-left:46px;padding-right:46px}}
+@media(max-width:1180px){.main-content{padding-left:28px;padding-right:28px}.capture-actions .button{font-size:11px;padding:9px 11px}.page-intro{min-width:190px}h1{font-size:30px}}
+@media(max-width:1050px){.sidebar{width:218px;padding-left:12px;padding-right:12px}.brand{gap:8px;padding:0 3px}.brand-mark{width:34px;height:34px;border-radius:10px}.brand-mark svg{width:25px;height:25px}.brand-title{font-size:14px;gap:4px}.brand-edition{font-size:7px;padding:3px}.brand-caption{font-size:8px}.main-content{margin-left:218px;width:calc(100% - 218px);padding:26px 24px 0}.page-heading{display:flex;flex-direction:column;gap:18px;padding-bottom:22px}.header-actions{width:100%;align-items:center;flex-direction:row;flex-wrap:wrap;gap:10px;margin-top:0;justify-content:space-between}.capture-actions{order:0}.header-utilities{order:1}.header-actions .button{width:auto}.page-description{max-width:none}.page-intro{padding:0}.library-toolbar{padding-top:20px}}

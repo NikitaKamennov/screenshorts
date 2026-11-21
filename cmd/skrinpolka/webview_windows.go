@@ -26,7 +26,7 @@ func nativeWindowOptions(dataRoot string) (*windows.Options, error) {
 	marker := filepath.Join(root,"config","windows-bundle.json")
 	file, err := os.Open(marker)
 	if errors.Is(err,os.ErrNotExist) && distributionMode != "bundle" { return options,nil }
-	if err != nil { return nil,fmt.Errorf("Неполный комплект ScreenShorts Pro: скопируй всю папку программы вместе с config, tools и runtime: %w",err) }
+	if err != nil { return nil,fmt.Errorf("Неполный комплект ScreenShooter Pro: скопируй всю папку программы вместе с config, tools и runtime: %w",err) }
 	content, readErr := io.ReadAll(io.LimitReader(file,8193))
 	closeErr := file.Close()
 	if readErr != nil || closeErr != nil || len(content)>8192 { return nil,fmt.Errorf("Не удалось прочитать описание Windows-комплекта") }

@@ -1,7 +1,13 @@
 # Windows: автономная папка, portable ZIP и установщик
 
-Команды относятся к **ScreenShorts Pro**, исходный каталог может называться
+Команды относятся к **ScreenShooter Pro**, исходный каталог может называться
 skrinpolka. Все пути ниже считаются от корня репозитория.
+
+Для текущей разработки владелец выбрал **только EXE**; portable и установщик
+собираются по отдельному сигналу. Локальная копия после переименования:
+`.local-data\build\windows-bundle-shelf\ScreenShooterPro\ScreenShooterPro.exe`.
+Её компиляция использует уже подготовленные соседние runtime без их пересборки.
+Команды комплектования ниже описаны для отдельного запроса полного набора.
 
 Готовый полный комплект содержит WebView2 Fixed Version, Tesseract с rus/eng,
 собственный Python, ONNX Runtime CPU и U²-NetP. На пользовательской машине
@@ -26,7 +32,7 @@ Python, Tesseract, npm/Node, Wails CLI, 7-Zip и Inno Setup заранее ст�
 
 | Команда | Что собирает | Куда пишет |
 | --- | --- | --- |
-| .\build-windows.cmd | Самостоятельную папку с EXE и всеми runtime | .local-data\build\windows-bundle\ScreenShortsPro\ |
+| .\build-windows.cmd | Самостоятельную папку с EXE и всеми runtime | .local-data\build\windows-bundle\ScreenShooterPro\ |
 | .\build-portable.cmd | Такую же папку + portable ZIP | Папка как выше; ZIP в .local-data\releases\windows-x64\portable\ |
 | .\build-release.cmd | Папку + portable ZIP + установщик | Папка как выше; ZIP/setup в .local-data\releases\windows-x64\release\ |
 
@@ -39,9 +45,9 @@ Python, Tesseract, npm/Node, Wails CLI, 7-Zip и Inno Setup заранее ст�
 Получатся:
 
 ~~~text
-.local-data/build/windows-bundle/ScreenShortsPro/ScreenShortsPro.exe
-.local-data/releases/windows-x64/release/ScreenShortsPro-windows-x64-portable.zip
-.local-data/releases/windows-x64/release/ScreenShortsPro-windows-x64-setup.exe
+.local-data/build/windows-bundle/ScreenShooterPro/ScreenShooterPro.exe
+.local-data/releases/windows-x64/release/ScreenShooterPro-windows-x64-portable.zip
+.local-data/releases/windows-x64/release/ScreenShooterPro-windows-x64-setup.exe
 .local-data/releases/windows-x64/release/SHA256SUMS.txt
 .local-data/releases/windows-x64/release/release-manifest.json
 ~~~
@@ -91,7 +97,7 @@ EXE разработчика, без runtime. Это другой режим:
 .\build-release.cmd -OutputTag preview
 ~~~
 
-Результаты будут в .local-data/build/windows-bundle-preview/ScreenShortsPro/
+Результаты будут в .local-data/build/windows-bundle-preview/ScreenShooterPro/
 и .local-data/releases/windows-x64/release-preview/.
 Метка меняет **каталоги выхода**; имена ZIP/setup и каталог пользовательских
 данных остаются прежними. Допустимы строчные латинские буквы, цифры и дефис,
@@ -107,23 +113,23 @@ EXE разработчика, без runtime. Это другой режим:
 такой запуск. Для вызова из другого скрипта без ожидания клавиши:
 
 ~~~powershell
-$env:SCREENSHORTS_NO_PAUSE = '1'
+$env:SCREENSHOOTER_NO_PAUSE = '1'
 .\build-windows.cmd
 ~~~
 
 ## Запуск папки и ZIP
 
 Для ZIP сначала распакуй архив целиком на локальный NTFS, затем открой
-ScreenShortsPro.exe из извлечённой папки. Запуск из папки сборки:
+ScreenShooterPro.exe из извлечённой папки. Запуск из папки сборки:
 
 ~~~powershell
-& .\.local-data\build\windows-bundle\ScreenShortsPro\ScreenShortsPro.exe
+& .\.local-data\build\windows-bundle\ScreenShooterPro\ScreenShooterPro.exe
 ~~~
 
 С отдельными данными для пробы:
 
 ~~~powershell
-& .\.local-data\build\windows-bundle\ScreenShortsPro\ScreenShortsPro.exe --data-root "$PWD\.local-data\manual-windows"
+& .\.local-data\build\windows-bundle\ScreenShooterPro\ScreenShooterPro.exe --data-root "$PWD\.local-data\manual-windows"
 ~~~
 
 По умолчанию настройки и библиотека находятся в %LOCALAPPDATA%\Skrinpolka.
@@ -138,7 +144,7 @@ ScreenShortsPro.exe из извлечённой папки. Запуск из п
 
 Режим Release создаёт установщик для текущего пользователя, без прав
 администратора и сети. По умолчанию установка идёт в
-%LOCALAPPDATA%\Programs\ScreenShortsPro; ярлык — в меню «Пуск»,
+%LOCALAPPDATA%\Programs\ScreenShooterPro; ярлык — в меню «Пуск»,
 ярлык рабочего стола необязателен. Приложение после установки само не запускается.
 
 Перед установкой новой версии или удалением выйди из программы через трей.

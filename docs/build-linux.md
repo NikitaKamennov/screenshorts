@@ -46,7 +46,7 @@ bash scripts/build-linux.sh
 bash scripts/start-local.sh
 ~~~
 
-Первая команда компилирует .local-data/build/linux-x64/ScreenShortsPro
+Первая команда компилирует .local-data/build/linux-x64/ScreenShooterPro
 и копирует соседний config/runtime-linux.json. Она не запускает приложение.
 Вторая запускает этот бинарник; изменения исходников автоматически в него
 не попадают. После изменений повтори сборку.
@@ -69,7 +69,7 @@ bash scripts/start-local.sh
 аргументами приложения:
 
 ~~~bash
-bash scripts/start-dev.sh --data-root "$HOME/ScreenShorts Lab" --runtime-config "$HOME/ScreenShorts Lab/runtime-linux.json"
+bash scripts/start-dev.sh --data-root "$HOME/ScreenShooter Lab" --runtime-config "$HOME/ScreenShooter Lab/runtime-linux.json"
 ~~~
 
 Оба пути в примере абсолютные; сам JSON нужно подготовить заранее.
@@ -97,7 +97,7 @@ sudo apt install tesseract-ocr tesseract-ocr-rus tesseract-ocr-eng bubblewrap
 
 При недоступном OCR сохраняются PNG и комментарий; ошибка не блокирует снимок.
 
-Для файлового буфера полки лаборатория использует `xclip` в X11 или `wl-copy`
+Для файлового буфера библиотеки лаборатория использует `xclip` в X11 или `wl-copy`
 в Wayland; для открытия папки — `xdg-open`. При отсутствии утилит установи:
 
 ~~~bash

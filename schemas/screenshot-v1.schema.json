@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:skrinpolka:screenshot:v1",
-  "title": "ScreenShorts Pro screenshot sidecar v1",
+  "title": "ScreenShooter Pro screenshot sidecar v1",
   "type": "object",
   "required": ["schema", "id", "image_file", "created_at", "width", "height", "note", "tags", "ocr", "image_sha256"],
   "properties": {
     "schema": {"const": "skrinpolka-screenshot-v1"},
-    "id": {"type": "string", "pattern": "^(?:[0-9a-f]{32}|(?:ScreenShorts Pro|Скринполка) [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}-[0-9]{2}-[0-9]{2}(?: \\((?:[2-9]|[1-9][0-9]{1,2}|1000)\\))?)$"},
-    "image_file": {"type": "string", "pattern": "^(?:[0-9a-f]{32}|(?:ScreenShorts Pro|Скринполка) [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}-[0-9]{2}-[0-9]{2}(?: \\((?:[2-9]|[1-9][0-9]{1,2}|1000)\\))?)\\.png$"},
+    "id": {"type": "string", "pattern": "^(?:[0-9a-f]{32}|(?:ScreenShooter Pro|ScreenShorts Pro|Скринполка) [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}-[0-9]{2}-[0-9]{2}(?: \\((?:[2-9]|[1-9][0-9]{1,2}|1000)\\))?)$"},
+    "image_file": {"type": "string", "pattern": "^(?:[0-9a-f]{32}|(?:ScreenShooter Pro|ScreenShorts Pro|Скринполка) [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}-[0-9]{2}-[0-9]{2}(?: \\((?:[2-9]|[1-9][0-9]{1,2}|1000)\\))?)\\.png$"},
     "created_at": {"type": "string", "format": "date-time"},
     "width": {"type": "integer", "minimum": 1, "maximum": 16000000},
     "height": {"type": "integer", "minimum": 1, "maximum": 16000000},

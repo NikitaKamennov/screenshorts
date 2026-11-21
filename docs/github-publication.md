@@ -1,6 +1,6 @@
 # Публикация исходников и обычные коммиты
 
-В Git входят исходники ScreenShorts Pro, публичные инструкции, конфиги,
+В Git входят исходники ScreenShooter Pro, публичные инструкции, конфиги,
 lock-файлы, manifests и лицензии. Готовые установщики/архивы, runtime, модели,
 скриншоты, метаданные пользователя и локальные материалы исключены.
 
@@ -56,7 +56,7 @@ git init -b main
 ~~~bash
 git add .
 git diff --cached --stat
-git commit -m "Initial ScreenShorts Pro sources"
+git commit -m "Initial ScreenShooter Pro sources"
 ~~~
 
 Создай на GitHub пустой репозиторий без дополнительных README, .gitignore

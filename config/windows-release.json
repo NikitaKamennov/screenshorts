@@ -3,8 +3,8 @@
   "version": "0.1.0-dev",
   "file_version": "0.1.0.0",
   "architecture": "amd64",
-  "application_directory": "ScreenShortsPro",
-  "portable_filename": "ScreenShortsPro-windows-x64-portable.zip",
-  "installer_filename": "ScreenShortsPro-windows-x64-setup.exe",
+  "application_directory": "ScreenShooterPro",
+  "portable_filename": "ScreenShooterPro-windows-x64-portable.zip",
+  "installer_filename": "ScreenShooterPro-windows-x64-setup.exe",
   "acceptance": "not-accepted"
 }

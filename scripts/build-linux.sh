@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SKRINPOLKA_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
-SKRINPOLKA_OUTPUT="$SKRINPOLKA_ROOT/.local-data/build/linux-x64/ScreenShortsPro"
+SKRINPOLKA_OUTPUT="$SKRINPOLKA_ROOT/.local-data/build/linux-x64/ScreenShooterPro"
 if [[ "$(uname -s)" != "Linux" || "$(uname -m)" != "x86_64" ]]; then
   echo 'Этот скрипт готовит нативный Linux x86_64 каркас.' >&2
   exit 1

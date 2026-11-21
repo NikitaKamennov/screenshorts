@@ -1,4 +1,4 @@
-# Участие в ScreenShorts Pro
+# Участие в ScreenShooter Pro
 
 Начни с [README](README.md), [статуса](docs/project-status.md) и
 [справочника скриптов](scripts/README.md). Для правок интерфейса полезна

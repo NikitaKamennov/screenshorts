@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ScreenShorts Pro local CPU worker. No downloads or network API.
+"""ScreenShooter Pro local CPU worker. No downloads or network API.
 
 U2NETP input normalization follows the published U-2-Net/rembg model contract.
 Only the flattened PNG supplied by the host is read, never a capture history.

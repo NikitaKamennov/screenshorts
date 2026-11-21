@@ -38,7 +38,7 @@ func (s *linuxService) startTray() error {
 	_, err = prop.Export(s.bus, "/StatusNotifierItem", prop.Map{notifierInterface: {
 		"Category": {Value:"ApplicationStatus",Emit:prop.EmitConst},
 		"Id": {Value:"skrinpolka",Emit:prop.EmitConst},
-		"Title": {Value:"ScreenShorts Pro",Emit:prop.EmitConst},
+		"Title": {Value:"ScreenShooter Pro",Emit:prop.EmitConst},
 		"Status": {Value:"Active",Emit:prop.EmitTrue},
 		"WindowId": {Value:uint32(0),Emit:prop.EmitConst},
 		"IconName": {Value:"",Emit:prop.EmitConst},
@@ -87,7 +87,7 @@ func (t *trayItem) ContextMenu(int32,int32) *dbus.Error { return nil }
 func (t *trayItem) Scroll(int32,string) *dbus.Error { return nil }
 
 func menuProperties(id int32) map[string]dbus.Variant {
-	labels:=map[int32]string{1:"Выделить область",5:"Весь экран",2:"Открыть полку",3:"Настройки",4:"Выйти"}
+	labels:=map[int32]string{1:"Выделить область",5:"Весь экран",2:"Открыть библиотеку",3:"Настройки",4:"Выйти"}
 	if id==0 {return map[string]dbus.Variant{"children-display":dbus.MakeVariant("submenu")}}
 	return map[string]dbus.Variant{"label":dbus.MakeVariant(labels[id]),"enabled":dbus.MakeVariant(true),"visible":dbus.MakeVariant(true)}
 }
